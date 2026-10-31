@@ -453,8 +453,9 @@ function createNarutoWorkPlan(prompt) {
   const toddler = /trẻ|tre|3 tuổi|3 tuoi|mầm non|mam non|\bgame\b|trò chơi|tro choi/.test(normalized);
   const now = Date.now();
   const planId = `plan-${now}`;
-  const titleMatch = prompt.match(/Tên công việc:[ \t]*([^\r\n]+)/i);
-  const dueMatch = prompt.match(/Hạn hoàn thành:[ \t]*(\d{4}-\d{2}-\d{2})/i);
+  // The form emits ASCII markers so parsing remains reliable across browser/terminal encodings.
+  const titleMatch = prompt.match(/TASK_TITLE:[ \t]*([^\r\n]+)/i) || prompt.match(/Tên công việc:[ \t]*([^\r\n]+)/i);
+  const dueMatch = prompt.match(/DUE_DATE:[ \t]*(\d{4}-\d{2}-\d{2})/i) || prompt.match(/Hạn hoàn thành:[ \t]*(\d{4}-\d{2}-\d{2})/i);
   const finalDue = dueMatch ? dueMatch[1] : null;
   const addDays = (days) => {
     const candidate = new Date(now + days * 86400000).toISOString().split("T")[0];
@@ -481,14 +482,20 @@ function createNarutoWorkPlan(prompt) {
     sourcePrompt: prompt,
     project,
     createdAt: new Date(now).toLocaleString(),
-    status: "needs_human_review",
+    status: "pending_founder_approval",
+    approval: {
+      status: "pending",
+      version: 1,
+      requestedAt: new Date(now).toLocaleString()
+    },
     resultUrl: toddler ? "games/brain-spark/index.html" : "#",
     resultLabel: toddler ? "Mở demo Chạm & Ghép" : "Mở báo cáo kế hoạch",
     milestones: templates.map(([title, assignee, rank, days, output]) => ({ title, assignee, rank, dueDate: addDays(days), output })),
     tasks: templates.map(([title, assignee, rank, days, desc], index) => ({
       id: `m-${now}-${index}`, planId, title, assignee, rank,
       dueDate: addDays(days), desc: `${desc} [Kế hoạch Naruto: ${project}]`,
-      status: index === 0 ? "in_progress" : "backlog"
+      // Founder must explicitly approve the proposed scope before any task starts.
+      status: "backlog"
     }))
   };
 }
@@ -502,6 +509,55 @@ function createOperationalPlanFromNaruto(prompt) {
   state.saveOperationalPlans();
   state.saveMissions();
   return plan;
+}
+
+function getPlanApprovalCopy(plan) {
+  const approval = plan.approval || { status: "pending", version: 1 };
+  if (approval.status === "approved") return { label: "Đã chấp nhận — đang triển khai", className: "text-emerald-300", detail: `Founder đã chấp nhận lúc ${approval.decidedAt || "chưa rõ"}.` };
+  if (approval.status === "rejected") return { label: "Đã từ chối — phương án này đã huỷ", className: "text-rose-300", detail: approval.reason ? `Lý do: ${approval.reason}` : "Founder yêu cầu làm lại phương án khác." };
+  return { label: "Chờ Founder duyệt", className: "text-amber-300", detail: "Chưa có task nào được phép triển khai." };
+}
+
+function approveOperationalPlan(planId) {
+  const plan = state.operationalPlans.find(item => item.id === planId);
+  if (!plan || plan.approval?.status !== "pending") return;
+  plan.approval = { ...plan.approval, status: "approved", decidedAt: new Date().toLocaleString() };
+  plan.status = "approved_in_execution";
+  const firstTask = state.missions.find(item => item.planId === planId);
+  if (firstTask) firstTask.status = "in_progress";
+  state.saveOperationalPlans();
+  state.saveMissions();
+  renderMissionsBoard();
+  renderDioramaCards();
+  renderOperationsReports();
+}
+
+function rejectOperationalPlan(planId) {
+  const plan = state.operationalPlans.find(item => item.id === planId);
+  if (!plan || plan.approval?.status !== "pending") return;
+  const reason = window.prompt("Lý do từ chối (tuỳ chọn). Naruto sẽ dùng nội dung này để lập phương án khác:", "") || "Founder yêu cầu phương án khác.";
+  plan.approval = { ...plan.approval, status: "rejected", decidedAt: new Date().toLocaleString(), reason };
+  plan.status = "rejected_by_founder";
+  // Cancel the unapproved tasks instead of letting them appear as executable work.
+  state.missions = state.missions.filter(item => item.planId !== planId);
+
+  const alternative = createNarutoWorkPlan(`${plan.sourcePrompt}\n\n# PHẢN HỒI FOUNDER — LẬP PHƯƠNG ÁN THAY THẾ\nLý do từ chối phương án trước: ${reason}`);
+  alternative.project = `${plan.project} — Phương án B`;
+  alternative.parentPlanId = plan.id;
+  alternative.approval = { status: "pending", version: (plan.approval.version || 1) + 1, requestedAt: new Date().toLocaleString(), replacesPlanId: plan.id };
+  alternative.tasks = alternative.tasks.map(task => ({
+    ...task,
+    title: `${task.title} (PA B)`,
+    desc: `${task.desc} Phản hồi Founder cần xử lý: ${reason}`,
+    status: "backlog"
+  }));
+  state.operationalPlans.unshift(alternative);
+  state.missions.unshift(...alternative.tasks);
+  state.saveOperationalPlans();
+  state.saveMissions();
+  renderMissionsBoard();
+  renderDioramaCards();
+  renderOperationsReports();
 }
 
 class AIService {
@@ -840,6 +896,7 @@ function renderOperationsReports() {
   }
   const notificationHtml = state.founderNotifications.length ? `<section class="glass-card p-4 border border-emerald-500/40"><h3 class="font-bold text-emerald-300 text-sm mb-3">🔔 Thông báo cho Founder</h3><div class="space-y-3">${state.founderNotifications.map(note => `<div class="p-3 rounded-xl bg-emerald-500/10 border border-emerald-500/20"><div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2"><div><div class="font-semibold text-slate-100 text-sm">${escapeHtml(note.title)}</div><p class="text-xs text-slate-300 mt-1">${escapeHtml(note.message)}</p><p class="text-[11px] text-slate-500 mt-1">${escapeHtml(note.createdAt)}</p></div><a href="${escapeHtml(note.resultUrl)}" class="shrink-0 px-3 py-2 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold">${escapeHtml(note.resultLabel)}</a></div></div>`).join("")}</div></section>` : "";
   container.innerHTML = notificationHtml + state.operationalPlans.map(plan => {
+    const approval = getPlanApprovalCopy(plan);
     const tasks = state.missions.filter(mission => mission.planId === plan.id);
     const complete = tasks.filter(task => task.status === "completed").length;
     const active = tasks.filter(task => task.status === "in_progress").length;
@@ -853,6 +910,14 @@ function renderOperationsReports() {
       </div>
       <div class="mt-4 h-2 bg-slate-800 rounded-full overflow-hidden"><div class="h-full bg-gradient-to-r from-amber-500 to-emerald-400" style="width:${percent}%"></div></div>
       <div class="grid grid-cols-2 md:grid-cols-4 gap-2 mt-4 text-xs"><div class="p-2 rounded bg-slate-900 text-slate-300">Đang làm: <b class="text-sky-300">${active}</b></div><div class="p-2 rounded bg-slate-900 text-slate-300">Chờ duyệt: <b class="text-amber-300">${review}</b></div><div class="p-2 rounded bg-slate-900 text-slate-300">Chờ xử lý: <b class="text-slate-200">${blocker}</b></div><div class="p-2 rounded bg-slate-900 text-slate-300">Hoàn tất: <b class="text-emerald-300">${complete}</b></div></div>
+      <section class="mt-4 p-4 rounded-xl border ${plan.approval?.status === "approved" ? "border-emerald-500/35 bg-emerald-500/5" : plan.approval?.status === "rejected" ? "border-rose-500/35 bg-rose-500/5" : "border-amber-500/35 bg-amber-500/5"}">
+        <div class="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3">
+          <div><div class="text-[10px] font-bold uppercase tracking-widest text-slate-400">Founder approval gate · Phương án v${plan.approval?.version || 1}</div><div class="font-bold text-sm mt-1 ${approval.className}">${approval.label}</div><p class="text-xs text-slate-300 mt-1">${escapeHtml(approval.detail)}</p></div>
+          ${plan.approval?.status === "pending" || !plan.approval ? `<div class="flex gap-2 shrink-0"><button class="px-3 py-2 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold" onclick="approveOperationalPlan('${plan.id}')">✓ Chấp nhận & bắt đầu</button><button class="px-3 py-2 rounded-lg bg-rose-600/90 hover:bg-rose-500 text-white text-xs font-bold" onclick="rejectOperationalPlan('${plan.id}')">✕ Từ chối, làm lại</button></div>` : ""}
+        </div>
+        <p class="text-[11px] text-slate-400 mt-3">Nội dung duyệt: mục tiêu, phạm vi MVP, đầu ra, hạn bàn giao, tiêu chí nghiệm thu và danh sách ${plan.milestones.length} task dưới đây. Không có hành động bên ngoài nào được tự động thực hiện.</p>
+        <details class="mt-3 text-xs"><summary class="cursor-pointer text-sky-300 hover:text-sky-200 font-semibold">Xem nguyên văn phiếu Founder sẽ duyệt</summary><pre class="mt-2 p-3 rounded-lg bg-slate-950/70 border border-slate-800 text-slate-300 whitespace-pre-wrap font-sans leading-relaxed">${escapeHtml(plan.sourcePrompt || "Không có nội dung phiếu gốc.")}</pre></details>
+      </section>
       <div class="mt-4 space-y-2">${tasks.map(task => `<div class="flex gap-2 text-xs"><span class="text-amber-300 shrink-0">${escapeHtml(task.dueDate)}</span><span class="text-slate-300">${AGENTS[task.assignee].avatarIcon} ${escapeHtml(task.title)}</span><span class="ml-auto text-slate-500">${escapeHtml(task.status)}</span></div>`).join("")}</div>
       <div class="mt-4 flex flex-wrap items-center gap-2"><a href="${escapeHtml(plan.resultUrl || "#")}" class="px-3 py-2 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold">${escapeHtml(plan.resultLabel || "Mở kết quả")}</a><p class="text-xs text-amber-100 bg-amber-500/10 border border-amber-500/20 rounded-lg p-2.5">Founder cần duyệt scope và mọi hành động bên ngoài. Báo cáo chỉ phản ánh trạng thái Kanban cục bộ.</p></div>
     </article>`;
@@ -924,6 +989,11 @@ function moveMission(id, dir, event) {
   const order = ["backlog", "in_progress", "reviewing", "completed"];
   const mission = state.missions.find(m => m.id === id);
   if (!mission) return;
+  const plan = mission.planId ? state.operationalPlans.find(item => item.id === mission.planId) : null;
+  if (plan && plan.approval?.status !== "approved") {
+    alert("Task này đang bị khoá. Founder cần chấp nhận phương án trong Báo cáo tiến độ trước khi triển khai.");
+    return;
+  }
 
   const currentIndex = order.indexOf(mission.status);
   const nextIndex = currentIndex + dir;
@@ -1160,7 +1230,7 @@ function submitStandardTaskBrief(event) {
     alert("Hãy điền đủ trường bắt buộc và xác nhận phạm vi an toàn.");
     return;
   }
-  const brief = `# PHIẾU GIAO VIỆC THỰC\nTên công việc: ${escapeHtml(title)}\nHạn hoàn thành: ${escapeHtml(dueDate)}\nƯu tiên: ${escapeHtml(priority)}\nThư mục/repo thực hiện: ${escapeHtml(workspace)}\n\nMục tiêu và phạm vi:\n${escapeHtml(objective)}\n\nArtifact/link phải bàn giao:\n${escapeHtml(artifact)}\n\nTiêu chí nghiệm thu và lệnh test:\n${escapeHtml(acceptance)}\n\nYêu cầu điều phối: tạo task thực, chỉ báo hoàn thành khi có artifact và bằng chứng test; mọi hành động bên ngoài cần Founder duyệt.`;
+  const brief = `# PHIẾU GIAO VIỆC THỰC\nTASK_TITLE: ${escapeHtml(title)}\nDUE_DATE: ${escapeHtml(dueDate)}\nPRIORITY: ${escapeHtml(priority)}\nWORKSPACE: ${escapeHtml(workspace)}\n\nOBJECTIVE:\n${escapeHtml(objective)}\n\nREQUIRED_ARTIFACT:\n${escapeHtml(artifact)}\n\nACCEPTANCE_AND_TEST:\n${escapeHtml(acceptance)}\n\nYêu cầu điều phối: tạo task thực, chỉ báo hoàn thành khi có artifact và bằng chứng test; mọi hành động bên ngoài cần Founder duyệt.`;
   state.activeAgentId = "naruto";
   renderAgentChatView();
   const chatInput = document.getElementById("chat-user-input");
