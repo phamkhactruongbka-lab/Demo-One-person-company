@@ -1,0 +1,19 @@
+{
+  "name": "konoha-solopreneur-os",
+  "version": "1.0.0",
+  "description": "Văn phòng Điều hành Công ty 1 người với 6 AI Agents mô phỏng Trụ sở Làng Lá",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "keywords": [
+    "solopreneur",
+    "ai-agents",
+    "naruto",
+    "operations",
+    "dashboard"
+  ],
+  "author": "Solopreneur Hokage",
+  "license": "MIT"
+}
+

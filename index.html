@@ -1,0 +1,919 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Konoha Solopreneur OS — Trụ sở Điều hành Công ty 1 Người</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            konoha: {
+              orange: '#ff781f',
+              green: '#84cc16',
+              blue: '#38bdf8',
+              pink: '#fb7185',
+              violet: '#a855f7',
+              lavender: '#c084fc',
+              gold: '#eab308',
+              dark: '#0f1117',
+              card: '#181b26'
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body class="bg-[#0f1117] text-slate-100 min-h-screen flex flex-col">
+
+  <!-- ================= TOP HEADER BAR ================= -->
+  <header class="border-b border-slate-800 bg-[#141722]/90 backdrop-blur sticky top-0 z-40">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 py-3 flex items-center justify-between">
+      
+      <!-- Logo & App Title -->
+      <div class="flex items-center gap-3 cursor-pointer" onclick="switchView('diorama')">
+        <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-amber-600 to-amber-400 flex items-center justify-center text-xl shadow-lg shadow-amber-500/20">
+          🍥
+        </div>
+        <div>
+          <div class="flex items-center gap-2">
+            <h1 class="font-extrabold text-base tracking-wider bg-clip-text text-transparent bg-gradient-to-r from-amber-400 via-orange-300 to-amber-200">
+              KONOHA SOLOPRENEUR OS
+            </h1>
+            <span class="text-[10px] px-2 py-0.5 rounded-full bg-amber-500/10 text-amber-400 border border-amber-500/30 font-semibold uppercase">
+              Làng Lá v1.0
+            </span>
+          </div>
+          <p class="text-xs text-slate-400">Trụ sở Điều hành Công ty 1 Người • 9 AI Agents</p>
+        </div>
+      </div>
+
+      <!-- Navigation Tabs -->
+      <nav class="hidden md:flex items-center gap-1 bg-slate-900/60 p-1 rounded-xl border border-slate-800">
+        <button id="tab-diorama" class="nav-tab active" onclick="switchView('diorama')">
+          <span>🏢</span> <span>Trụ sở Làng Lá</span>
+        </button>
+        <button id="tab-missions" class="nav-tab" onclick="switchView('missions')">
+          <span>📜</span> <span>Nhiệm vụ (Kanban)</span>
+        </button>
+        <button id="tab-warroom" class="nav-tab" onclick="switchView('warroom')">
+          <span>🌀</span> <span>Hội đồng Làng Lá</span>
+        </button>
+        <button id="tab-chat" class="nav-tab" onclick="switchView('chat')">
+          <span>💬</span> <span>Phòng 9 Agents</span>
+        </button>
+        <button id="tab-capabilities" class="nav-tab" onclick="switchView('capabilities')">
+          <span>🧠</span> <span>Năng lực AI</span>
+        </button>
+        <button id="tab-reports" class="nav-tab" onclick="switchView('reports')">
+          <span>📊</span> <span>Báo cáo tiến độ</span>
+        </button>
+        <button id="tab-ecc" class="nav-tab" onclick="switchView('ecc')">
+          <span>⚡</span> <span>Xưởng ECC Tech</span>
+        </button>
+      </nav>
+
+      <!-- Founder Status & Settings -->
+      <div class="flex items-center gap-3">
+        <div class="hidden sm:flex flex-col text-right">
+          <span id="header-founder-name" class="text-xs font-bold text-slate-200">Hokage Founder</span>
+          <span class="text-[10px] text-emerald-400 flex items-center justify-end gap-1">
+            <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span> 9 Agents Online
+          </span>
+        </div>
+        <button id="tab-settings" class="p-2 rounded-lg bg-slate-800/80 hover:bg-slate-700 text-slate-300 border border-slate-700 transition-all text-sm"
+                onclick="switchView('settings')" title="Cài đặt AI & API">
+          ⚙️
+        </button>
+      </div>
+
+    </div>
+  </header>
+
+  <!-- ================= MOBILE SUBNAV ================= -->
+  <div class="md:hidden flex overflow-x-auto gap-1 p-2 bg-slate-900 border-b border-slate-800 text-xs">
+    <button class="px-3 py-1.5 rounded-lg bg-slate-800 text-slate-200 shrink-0" onclick="switchView('diorama')">🏢 Trụ sở</button>
+    <button class="px-3 py-1.5 rounded-lg bg-slate-800 text-slate-200 shrink-0" onclick="switchView('missions')">📜 Nhiệm vụ</button>
+    <button class="px-3 py-1.5 rounded-lg bg-slate-800 text-slate-200 shrink-0" onclick="switchView('warroom')">🌀 Hội đồng</button>
+    <button class="px-3 py-1.5 rounded-lg bg-slate-800 text-slate-200 shrink-0" onclick="switchView('chat')">💬 9 Agents</button>
+    <button class="px-3 py-1.5 rounded-lg bg-slate-800 text-slate-200 shrink-0" onclick="switchView('capabilities')">🧠 Năng lực AI</button>
+    <button class="px-3 py-1.5 rounded-lg bg-purple-900/80 text-purple-200 border border-purple-500/40 shrink-0" onclick="switchView('ecc')">⚡ Xưởng ECC</button>
+  </div>
+
+  <!-- ================= MAIN CONTENT CONTAINER ================= -->
+  <main class="flex-1 max-w-7xl w-full mx-auto p-4 sm:p-6">
+
+    <!-- VIEW 1: DIORAMA HEADQUARTERS VIEW -->
+    <section id="view-diorama" class="space-y-6">
+      <!-- Hero Diorama Banner with Animated Working Characters -->
+      <div class="relative glass-card overflow-hidden rounded-2xl border border-amber-500/30 shadow-2xl">
+        <div class="relative w-full aspect-[16/9] max-h-[620px] bg-slate-950 flex justify-center items-center overflow-hidden">
+          <img src="assets/images/hq_3floor_9rooms.jpg" alt="Trụ sở Làng Lá 9 Phòng ban 3 Tầng" 
+               class="w-full h-full object-cover object-center select-none">
+          
+          <!-- Animated Working Overlays for each of the 9 Rooms -->
+          <div id="diorama-working-overlay" class="absolute inset-0 pointer-events-none">
+            
+            <!-- TẦNG 3 (HÀNG TRÊN) -->
+            <!-- Phòng 7: Jiraiya (Tầng 3 - Trái) -->
+            <div class="room-hotspot" style="top: 3%; left: 6%; width: 28%; height: 28%;"
+                 onclick="inspectRoom('jiraiya')" title="Nhấn để xem Jiraiya đang làm việc">
+              <div class="absolute top-2 left-2 bg-black/75 backdrop-blur-md px-2 py-0.5 rounded-full border border-red-500/50 flex items-center gap-1.5 shadow-lg">
+                <span class="w-2 h-2 rounded-full bg-red-500 animate-ping"></span>
+                <span class="text-[10px] font-bold text-red-300">Jiraiya: Sáng tác Viral Content</span>
+                <span class="scroll-float text-xs inline-block">📜</span>
+              </div>
+              <div class="absolute bottom-3 right-6 w-8 h-8 rounded-full fire-spark pointer-events-none flex items-center justify-center">
+                <span class="text-sm">🔥</span>
+              </div>
+            </div>
+
+            <!-- Phòng 9: Tsunade (Tầng 3 - Giữa) -->
+            <div class="room-hotspot" style="top: 2%; left: 36%; width: 28%; height: 29%;"
+                 onclick="inspectRoom('tsunade')" title="Nhấn để xem Tsunade đang làm việc">
+              <div class="absolute top-2 left-2 bg-black/75 backdrop-blur-md px-2 py-0.5 rounded-full border border-amber-500/50 flex items-center gap-1.5 shadow-lg">
+                <span class="w-2 h-2 rounded-full bg-amber-400 animate-ping"></span>
+                <span class="text-[10px] font-bold text-amber-300">Tsunade: Quản trị Quỹ & Runway</span>
+                <span class="coin-anim text-xs inline-block">🪙</span>
+              </div>
+              <div class="absolute bottom-4 left-1/2 -translate-x-1/2 w-8 h-8 rounded-full seal-glow-anim pointer-events-none flex items-center justify-center">
+                <span class="text-xs text-amber-300 font-bold">💎</span>
+              </div>
+            </div>
+
+            <!-- Phòng 8: Sai (Tầng 3 - Phải) -->
+            <div class="room-hotspot" style="top: 3%; left: 66%; width: 28%; height: 28%;"
+                 onclick="inspectRoom('sai')" title="Nhấn để xem Sai đang làm việc">
+              <div class="absolute top-2 left-2 bg-black/75 backdrop-blur-md px-2 py-0.5 rounded-full border border-slate-500/50 flex items-center gap-1.5 shadow-lg">
+                <span class="w-2 h-2 rounded-full bg-slate-400 animate-ping"></span>
+                <span class="text-[10px] font-bold text-slate-300">Sai: Siêu Thú Họa UI/UX</span>
+                <span class="ink-brush-anim text-xs inline-block">🖌️</span>
+              </div>
+              <div class="absolute top-8 right-6 text-xs text-slate-300 ink-beast-anim pointer-events-none">🦅</div>
+            </div>
+
+            <!-- TẦNG 2 (HÀNG GIỮA) -->
+            <!-- Phòng 1: Naruto (Tầng 2 - Trái) -->
+            <div class="room-hotspot" style="top: 33%; left: 6%; width: 28%; height: 29%;"
+                 onclick="inspectRoom('naruto')" title="Nhấn để xem Naruto đang làm việc">
+              <div class="absolute top-2 left-2 bg-black/75 backdrop-blur-md px-2 py-0.5 rounded-full border border-orange-500/50 flex items-center gap-1.5 shadow-lg">
+                <span class="w-2 h-2 rounded-full bg-orange-500 animate-ping"></span>
+                <span class="text-[10px] font-bold text-orange-300">Naruto: Duyệt sớ nhiệm vụ</span>
+                <span class="quill-anim text-xs inline-block">✍️</span>
+              </div>
+              <div class="absolute bottom-4 right-6 w-10 h-10 rounded-full naruto-aura pointer-events-none flex items-center justify-center">
+                <span class="text-sm">🍥</span>
+              </div>
+            </div>
+
+            <!-- Phòng 2: Shikamaru (Tầng 2 - Giữa) -->
+            <div class="room-hotspot" style="top: 32%; left: 36%; width: 28%; height: 30%;"
+                 onclick="inspectRoom('shikamaru')" title="Nhấn để xem Shikamaru đang làm việc">
+              <div class="absolute top-2 left-2 bg-black/75 backdrop-blur-md px-2 py-0.5 rounded-full border border-lime-500/50 flex items-center gap-1.5 shadow-lg">
+                <span class="w-2 h-2 rounded-full bg-lime-400 animate-ping"></span>
+                <span class="text-[10px] font-bold text-lime-300">Shikamaru: Phân tích cờ Shogi</span>
+                <span class="thought-anim text-xs inline-block">♟️</span>
+              </div>
+              <div class="absolute bottom-5 left-1/2 -translate-x-1/2 w-12 h-12 rounded-full border-2 border-lime-400/40 shogi-pulse pointer-events-none flex items-center justify-center">
+                <span class="text-[9px] text-lime-300 font-mono">80/20</span>
+              </div>
+            </div>
+
+            <!-- Phòng 5: Sasuke (Tầng 2 - Phải) -->
+            <div class="room-hotspot" style="top: 33%; left: 66%; width: 28%; height: 29%;"
+                 onclick="inspectRoom('sasuke')" title="Nhấn để xem Sasuke đang làm việc">
+              <div class="absolute top-2 left-2 bg-black/75 backdrop-blur-md px-2 py-0.5 rounded-full border border-purple-500/50 flex items-center gap-1.5 shadow-lg">
+                <span class="w-2 h-2 rounded-full bg-purple-400 animate-ping"></span>
+                <span class="text-[10px] font-bold text-purple-300">Sasuke: Code n8n & API</span>
+                <span class="text-xs inline-block animate-spin">⚙️</span>
+              </div>
+              <div class="absolute bottom-5 right-6 flex flex-col gap-1 p-1 bg-black/80 rounded border border-purple-500/40 pointer-events-none">
+                <div class="w-1.5 h-1.5 rounded-full led-1"></div>
+                <div class="w-1.5 h-1.5 rounded-full led-2"></div>
+              </div>
+              <div class="absolute top-10 left-8 w-16 h-7 border border-purple-500/40 rounded overflow-hidden pointer-events-none bg-purple-950/40">
+                <div class="code-scan-line"></div>
+                <div class="text-[6px] font-mono text-purple-300/80 p-0.5">POST /deploy</div>
+              </div>
+            </div>
+
+            <!-- TẦNG 1 (HÀNG DƯỚI) -->
+            <!-- Phòng 4: Sakura (Tầng 1 - Trái) -->
+            <div class="room-hotspot" style="top: 64%; left: 6%; width: 28%; height: 32%;"
+                 onclick="inspectRoom('sakura')" title="Nhấn để xem Sakura đang làm việc">
+              <div class="absolute top-2 left-2 bg-black/75 backdrop-blur-md px-2 py-0.5 rounded-full border border-pink-500/50 flex items-center gap-1.5 shadow-lg">
+                <span class="w-2 h-2 rounded-full bg-pink-400 animate-ping"></span>
+                <span class="text-[10px] font-bold text-pink-300">Sakura: Phản hồi khách hàng</span>
+                <span class="text-xs inline-block animate-pulse">💬</span>
+              </div>
+              <div class="absolute top-8 left-8 pointer-events-none space-y-1">
+                <div class="bubble-float-1 px-2 py-0.5 rounded-full bg-pink-500/90 text-[8px] font-semibold text-white shadow-md">
+                  Dạ em chào anh! ❤️
+                </div>
+              </div>
+              <div class="absolute bottom-4 right-6 text-xs text-pink-300 petal-drift pointer-events-none">🌸</div>
+            </div>
+
+            <!-- Phòng 3: Kakashi (Tầng 1 - Giữa) -->
+            <div class="room-hotspot" style="top: 63%; left: 36%; width: 28%; height: 33%;"
+                 onclick="inspectRoom('kakashi')" title="Nhấn để xem Kakashi đang làm việc">
+              <div class="absolute top-2 left-2 bg-black/75 backdrop-blur-md px-2 py-0.5 rounded-full border border-sky-500/50 flex items-center gap-1.5 shadow-lg">
+                <span class="w-2 h-2 rounded-full bg-sky-400 animate-ping"></span>
+                <span class="text-[10px] font-bold text-sky-300">Kakashi: Soi lỗi Sharingan</span>
+                <span class="chidori-spark text-xs inline-block">⚡</span>
+              </div>
+              <div class="absolute top-8 right-6 w-6 h-6 rounded-lg bg-sky-950/70 border border-sky-400/50 checkmark-ping pointer-events-none flex items-center justify-center">
+                <span class="text-[10px] text-emerald-400 font-bold">✓</span>
+              </div>
+            </div>
+
+            <!-- Phòng 6: Hinata (Tầng 1 - Phải) -->
+            <div class="room-hotspot" style="top: 64%; left: 66%; width: 28%; height: 32%;"
+                 onclick="inspectRoom('hinata')" title="Nhấn để xem Hinata đang làm việc">
+              <div class="absolute top-2 left-2 bg-black/75 backdrop-blur-md px-2 py-0.5 rounded-full border border-fuchsia-500/50 flex items-center gap-1.5 shadow-lg">
+                <span class="w-2 h-2 rounded-full bg-fuchsia-400 animate-ping"></span>
+                <span class="text-[10px] font-bold text-fuchsia-300">Hinata: Byakugan Market Scan</span>
+                <span class="text-xs inline-block animate-pulse">👁️</span>
+              </div>
+              <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-16 h-16 rounded-full border border-fuchsia-400 byakugan-radar pointer-events-none"></div>
+              <div class="absolute bottom-6 left-8 pointer-events-none">
+                <span class="potion-bubble text-[10px] inline-block text-fuchsia-300">🫧</span>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- Overlay Status & Live Working Switch -->
+        <div class="absolute top-4 left-4 flex flex-wrap gap-2 pointer-events-auto">
+          <span class="bg-black/70 backdrop-blur-md px-3 py-1 rounded-full text-xs font-semibold border border-white/10 text-amber-300 flex items-center gap-2">
+            <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+            🏯 Trụ sở Làng Lá (9 Nhân Viên Đang Làm Việc)
+          </span>
+          <button id="btn-toggle-work-fx" class="bg-slate-900/80 hover:bg-slate-800 text-slate-200 text-xs px-2.5 py-1 rounded-full border border-slate-700 backdrop-blur-md flex items-center gap-1.5"
+                  onclick="toggleWorkAnimations()">
+            <span id="work-fx-icon">⚡</span> <span id="work-fx-text">Hiệu ứng: Bật</span>
+          </button>
+        </div>
+
+        <!-- Live Ticker Bar -->
+        <div class="bg-slate-950/90 border-t border-slate-800 px-4 py-2 flex items-center gap-3 text-xs overflow-hidden">
+          <div class="flex items-center gap-1.5 text-amber-400 font-bold shrink-0">
+            <span class="w-2 h-2 rounded-full bg-amber-400 animate-ping"></span>
+            <span>HOẠT ĐỘNG TRỰC TIẾP:</span>
+          </div>
+          <div class="ticker-wrap flex-1 text-slate-300 font-mono">
+            <div id="live-activity-ticker" class="ticker-content">
+              [11:48] Sasuke: Đang build workflow n8n tự động gửi email chào mừng • [11:49] Sakura: Đang trả lời thắc mắc của khách hàng VIP qua email • [11:49] Kakashi: Đã nghiệm thu 15 tiêu chí chất lượng cho dự án Cấp S • [11:50] Naruto: Đang duyệt danh sách nhiệm vụ hôm nay và đôn đốc tiến độ • [11:50] Jiraiya: Đang viết chiến dịch Storytelling Viral triệu view • [11:51] Sai: Đang hoàn thiện hệ thống Design System UI • [11:51] Tsunade: Vừa cân đối dòng tiền và thiết lập quỹ dự phòng khẩn cấp...
+            </div>
+          </div>
+        </div>
+
+        <div class="p-3 bg-slate-900/60 border-t border-slate-800/80 flex items-center justify-between flex-wrap gap-2">
+          <div class="text-xs text-slate-400 flex items-center gap-1.5">
+            <span>💡</span> <span>Nhấn trực tiếp vào bất kỳ phòng nào trên hình để tương tác hoặc giao việc cho nhân vật đó!</span>
+          </div>
+          <div class="flex gap-2 flex-wrap">
+            <button class="bg-purple-900/80 hover:bg-purple-800 text-purple-200 text-xs px-3 py-1.5 rounded-lg border border-purple-500/50 backdrop-blur-md flex items-center gap-1.5 shadow"
+                    onclick="switchView('ecc')">
+              <span>⚡</span> Xưởng Công Nghệ ECC
+            </button>
+            <button class="bg-amber-600/90 hover:bg-amber-500 text-white font-medium text-xs px-3.5 py-1.5 rounded-lg backdrop-blur-md shadow-lg flex items-center gap-1.5"
+                    onclick="switchView('warroom')">
+              <span>🌀</span> Triệu tập Hội đồng Làng Lá
+            </button>
+            <button class="bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs px-3 py-1.5 rounded-lg border border-slate-700"
+                    onclick="openNewMissionModal()">
+              + Giao Nhiệm Vụ Mới
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Quick Room Shortcuts -->
+      <div>
+        <div class="flex items-center justify-between mb-3">
+          <h3 class="text-sm font-bold uppercase tracking-wider text-slate-400">Danh sách 9 Phòng ban & Nhân sự AI</h3>
+          <span class="text-xs text-amber-400">Nhấn vào phòng để làm việc trực tiếp ➔</span>
+        </div>
+        <div id="diorama-cards-grid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-3">
+          <!-- Dynamically populated by app.js -->
+        </div>
+      </div>
+          <!-- Dynamically populated by app.js -->
+        </div>
+      </div>
+    </section>
+
+    <!-- VIEW 2: MISSIONS KANBAN BOARD -->
+    <section id="view-missions" class="hidden space-y-4">
+      <div class="flex items-center justify-between flex-wrap gap-3 pb-2 border-b border-slate-800">
+        <div>
+          <h2 class="text-lg font-bold text-slate-100 flex items-center gap-2">
+            <span>📜</span> Bảng Nhiệm Vụ Ninja (Kanban Board)
+          </h2>
+          <p class="text-xs text-slate-400">Phân cấp nhiệm vụ Cấp S (Sống còn), A (Quan trọng), B (Quy trình), C (Nội dung), D (Cơ bản)</p>
+        </div>
+        <button class="px-4 py-2 bg-gradient-to-r from-amber-600 to-orange-500 hover:from-amber-500 hover:to-orange-400 text-white text-xs font-bold rounded-xl shadow-lg shadow-orange-500/20"
+                onclick="openNewMissionModal()">
+          + Thêm Nhiệm Vụ Mới
+        </button>
+      </div>
+
+      <!-- 4 Columns Grid -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+        <!-- Col 1: Backlog -->
+        <div class="bg-slate-900/60 rounded-xl p-3 border border-slate-800/80 flex flex-col min-h-[500px]">
+          <div class="flex items-center justify-between pb-2 mb-3 border-b border-slate-800 text-xs font-bold text-slate-400 uppercase tracking-wider">
+            <span>📥 Chờ Xử Lý (Backlog)</span>
+          </div>
+          <div id="col-backlog" class="flex-1 space-y-2"></div>
+        </div>
+
+        <!-- Col 2: In Progress -->
+        <div class="bg-slate-900/60 rounded-xl p-3 border border-slate-800/80 flex flex-col min-h-[500px]">
+          <div class="flex items-center justify-between pb-2 mb-3 border-b border-slate-800 text-xs font-bold text-amber-400 uppercase tracking-wider">
+            <span>⚡ Đang Triển Khai (In Progress)</span>
+          </div>
+          <div id="col-in_progress" class="flex-1 space-y-2"></div>
+        </div>
+
+        <!-- Col 3: Kakashi Review -->
+        <div class="bg-slate-900/60 rounded-xl p-3 border border-slate-800/80 flex flex-col min-h-[500px]">
+          <div class="flex items-center justify-between pb-2 mb-3 border-b border-slate-800 text-xs font-bold text-sky-400 uppercase tracking-wider">
+            <span>🔍 Kakashi Kiểm Định (Review & QA)</span>
+          </div>
+          <div id="col-reviewing" class="flex-1 space-y-2"></div>
+        </div>
+
+        <!-- Col 4: Completed -->
+        <div class="bg-slate-900/60 rounded-xl p-3 border border-slate-800/80 flex flex-col min-h-[500px]">
+          <div class="flex items-center justify-between pb-2 mb-3 border-b border-slate-800 text-xs font-bold text-emerald-400 uppercase tracking-wider">
+            <span>🏆 Hoàn Thành (Done)</span>
+          </div>
+          <div id="col-completed" class="flex-1 space-y-2"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- VIEW 3: WAR ROOM (HỘI ĐỒNG LÀNG LÁ) -->
+    <section id="view-warroom" class="hidden space-y-6">
+      <div class="glass-card p-6 border-amber-500/20">
+        <div class="flex items-center gap-3 mb-3">
+          <span class="text-3xl">🌀</span>
+          <div>
+            <h2 class="text-lg font-bold text-amber-300">Hội Đồng Tham Mưu Làng Lá (Council War Room)</h2>
+            <p class="text-xs text-slate-400">
+              Nhập mục tiêu hoặc bài toán kinh doanh lớn của bạn. Cả 9 AI Agents sẽ cùng họp bàn, phân tích và đưa ra kế hoạch toàn diện.
+            </p>
+          </div>
+        </div>
+
+        <div class="space-y-3">
+          <textarea id="council-topic-input" rows="3"
+                    class="w-full bg-slate-950/80 border border-slate-700/80 rounded-xl p-3 text-sm text-slate-200 placeholder-slate-500 focus:outline-none focus:border-amber-500"
+                    placeholder="Ví dụ: Tôi muốn ra mắt dịch vụ thiết kế hệ thống tự động hóa marketing bằng AI cho khách hàng doanh nghiệp nhỏ, với mức phí 10 triệu/tháng."></textarea>
+          
+          <div class="flex flex-wrap items-center justify-between gap-3">
+            <div class="flex flex-wrap gap-2 text-xs">
+              <span class="text-slate-400 py-1">Gợi ý nhanh:</span>
+              <button class="px-2.5 py-1 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-lg border border-slate-700"
+                      onclick="document.getElementById('council-topic-input').value = 'Lập chiến lược ra mắt sản phẩm số và tự động hóa quy trình thu hút 50 khách hàng đầu tiên.'">
+                🎯 Ra mắt sản phẩm số
+              </button>
+              <button class="px-2.5 py-1 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-lg border border-slate-700"
+                      onclick="document.getElementById('council-topic-input').value = 'Định giá lại toàn bộ dịch vụ của công ty một người để tăng gấp đôi biên lợi nhuận.'">
+                💰 Tăng gấp đôi lợi nhuận
+              </button>
+            </div>
+
+            <div class="flex gap-2">
+              <button id="btn-summon-council" 
+                      class="px-5 py-2.5 bg-gradient-to-r from-amber-600 via-orange-500 to-amber-500 hover:brightness-110 text-white font-bold text-xs rounded-xl shadow-lg shadow-orange-500/20 flex items-center gap-2"
+                      onclick="startCouncilMeeting()">
+                <span>🌀</span> Triệu tập Hội đồng Làng Lá
+              </button>
+              <button class="px-3 py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs rounded-xl border border-slate-700"
+                      onclick="exportCouncilMarkdown()" title="Tải biên bản họp về máy">
+                📥 Xuất Markdown
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Live Stream of Council Responses -->
+      <div id="council-results-feed" class="space-y-4">
+        <!-- Results will be injected here -->
+      </div>
+    </section>
+
+    <!-- VIEW 4: 1-ON-1 AGENT CHAT -->
+    <section id="view-chat" class="hidden">
+      <div class="grid grid-cols-1 lg:grid-cols-4 gap-4 h-[75vh]">
+        
+        <!-- Left: Agent Selector -->
+        <div class="glass-card p-3 flex flex-col overflow-y-auto">
+          <div class="text-xs font-bold text-slate-400 uppercase tracking-wider px-2 py-1 mb-2">
+            9 Trưởng Phòng AI
+          </div>
+          <div id="chat-agent-selector-list" class="space-y-1.5 flex-1">
+            <!-- Dynamically populated -->
+          </div>
+        </div>
+
+        <!-- Right: Chat Window -->
+        <div class="lg:col-span-3 glass-card flex flex-col overflow-hidden">
+          
+          <!-- Chat Header -->
+          <div class="p-4 border-b border-slate-800/80 flex items-center justify-between bg-slate-900/50">
+            <div class="flex items-center gap-3">
+              <div id="chat-agent-avatar" class="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center text-2xl">
+                🍥
+              </div>
+              <div>
+                <h3 id="chat-agent-name" class="font-bold text-slate-100 text-base">Naruto Uzumaki</h3>
+                <p id="chat-agent-role" class="text-xs text-amber-400">Trưởng ban Điều hành</p>
+              </div>
+            </div>
+            <div id="chat-agent-quote" class="hidden sm:block text-xs italic text-slate-400 max-w-xs text-right truncate">
+              "Dattebayo!"
+            </div>
+          </div>
+
+          <div class="px-4 py-2 border-b border-slate-800 bg-slate-950/40 flex items-center justify-between gap-3">
+            <span class="text-xs text-slate-400">Giao việc thực cần có artifact và tiêu chí nghiệm thu.</span>
+            <button class="shrink-0 px-3 py-1.5 rounded-lg bg-amber-600 hover:bg-amber-500 text-white text-xs font-bold" onclick="toggleStandardTaskForm()">+ Giao việc chuẩn</button>
+          </div>
+
+          <form id="standard-task-form" class="hidden p-4 border-b border-amber-500/30 bg-amber-500/5 space-y-3" onsubmit="submitStandardTaskBrief(event)">
+            <div class="flex items-center justify-between"><div><h4 class="font-bold text-sm text-amber-200">Phiếu giao việc thực</h4><p class="text-[11px] text-slate-400">Naruto tạo kế hoạch; hoàn thành chỉ hợp lệ khi có artifact và kiểm tra.</p></div><button type="button" class="text-slate-400 hover:text-white" onclick="toggleStandardTaskForm()">✕</button></div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+              <label class="text-xs text-slate-300">Tên công việc *<input id="task-brief-title" required maxlength="120" class="mt-1 w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm" placeholder="VD: App quản lý ROI SMT"></label>
+              <label class="text-xs text-slate-300">Hạn hoàn thành *<input id="task-brief-due" required type="date" class="mt-1 w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm"></label>
+              <label class="text-xs text-slate-300">Thư mục/repo thực hiện *<input id="task-brief-workspace" required class="mt-1 w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm" placeholder="D:\\Demo\\games\\my-app"></label>
+              <label class="text-xs text-slate-300">Mức ưu tiên<select id="task-brief-priority" class="mt-1 w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm"><option value="S">S — quan trọng</option><option value="A" selected>A — cao</option><option value="B">B — quy trình</option><option value="C">C — nội dung</option></select></label>
+            </div>
+            <label class="block text-xs text-slate-300">Mục tiêu và phạm vi *<textarea id="task-brief-objective" required rows="2" class="mt-1 w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm" placeholder="Người dùng, chức năng cần làm và giới hạn không làm..."></textarea></label>
+            <label class="block text-xs text-slate-300">Artifact/link phải bàn giao *<input id="task-brief-artifact" required class="mt-1 w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm" placeholder="VD: games/my-app/index.html hoặc link preview"></label>
+            <label class="block text-xs text-slate-300">Tiêu chí nghiệm thu và lệnh test *<textarea id="task-brief-acceptance" required rows="2" class="mt-1 w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm" placeholder="VD: chạy được localhost, nút A/B hoạt động, node --check app.js pass..."></textarea></label>
+            <label class="flex items-start gap-2 text-xs text-amber-100"><input id="task-brief-approval" type="checkbox" checked class="mt-0.5"> <span>Tôi xác nhận đây là yêu cầu thực. Không gửi/đăng/chi tiền/tác động hệ thống bên ngoài nếu chưa được Founder duyệt.</span></label>
+            <div class="flex justify-end gap-2"><button type="button" class="px-3 py-2 rounded-lg bg-slate-800 text-slate-300 text-xs" onclick="toggleStandardTaskForm()">Hủy</button><button class="px-4 py-2 rounded-lg bg-amber-600 hover:bg-amber-500 text-white text-xs font-bold">Gửi Naruto điều phối →</button></div>
+          </form>
+
+          <!-- Messages Container -->
+          <div id="chat-messages-container" class="flex-1 p-4 overflow-y-auto space-y-4">
+            <!-- Messages rendered by app.js -->
+          </div>
+
+          <!-- Thinking Indicator -->
+          <div id="chat-thinking-indicator" class="hidden px-4 py-2 bg-slate-900/60 border-t border-slate-800 flex items-center gap-2 text-xs text-amber-400">
+            <span class="animate-spin inline-block">🌀</span> Agent đang vận tụ Chakra và suy nghĩ câu trả lời...
+          </div>
+
+          <!-- Chat Input -->
+          <div class="p-3 border-t border-slate-800/80 bg-slate-900/60 flex gap-2">
+            <input type="text" id="chat-user-input"
+                   class="flex-1 bg-slate-950 border border-slate-700/80 rounded-xl px-4 py-2.5 text-sm text-slate-200 placeholder-slate-500 focus:outline-none focus:border-amber-500"
+                   placeholder="Nhập yêu cầu hoặc câu hỏi cho Agent (Nhấn Enter để gửi)...">
+            <button class="px-5 py-2.5 bg-amber-600 hover:bg-amber-500 text-white font-bold text-xs rounded-xl shadow-md"
+                    onclick="sendChatMessage()">
+              Gửi ➔
+            </button>
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+    <!-- VIEW 5: AI CAPABILITIES & HUMAN APPROVAL GATES -->
+    <section id="view-capabilities" class="hidden space-y-5">
+      <div class="glass-card p-5 border border-violet-500/30">
+        <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-3">
+          <div>
+            <div class="text-xs font-bold uppercase tracking-widest text-violet-300">Cấu hình hoạt động</div>
+            <h2 class="text-xl font-extrabold text-slate-100 mt-1">9 phòng ban • 24 AI Agent chuyên môn • Skill theo vai trò</h2>
+            <p class="text-xs text-slate-400 mt-2 max-w-3xl">Agent chỉ chuẩn bị phân tích, bản thảo, code và kiểm tra. Founder giữ quyền phê duyệt tài khoản, tiền, xuất bản nội dung và kết luận chất lượng SMT.</p>
+          </div>
+          <div class="flex items-center gap-2 rounded-xl bg-amber-500/10 border border-amber-500/30 px-3 py-2 text-xs text-amber-200">
+            <span>🛡️</span><span>Human approval bắt buộc</span>
+          </div>
+        </div>
+      </div>
+      <div id="capability-summary" class="grid grid-cols-1 md:grid-cols-3 gap-3"></div>
+      <div id="capability-departments" class="grid grid-cols-1 lg:grid-cols-2 gap-4"></div>
+    </section>
+
+    <!-- VIEW 5: ECC TECH FORGE (XƯỞNG CÔNG NGHỆ ECC) -->
+    <section id="view-reports" class="hidden space-y-5">
+      <div class="glass-card p-5 border border-amber-500/30">
+        <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-3">
+          <div>
+            <div class="text-xs font-bold uppercase tracking-widest text-amber-300">Naruto Operations Center</div>
+            <h2 class="text-xl font-extrabold text-slate-100 mt-1">Báo cáo tiến độ kế hoạch tự động</h2>
+            <p class="text-xs text-slate-400 mt-2">Số liệu được tính từ Kanban trong trình duyệt này; không phải báo cáo từ hệ thống bên ngoài.</p>
+          </div>
+          <div class="flex gap-2 flex-wrap">
+            <a href="games/brain-spark/index.html" class="px-3 py-2 text-xs rounded-xl bg-emerald-600 hover:bg-emerald-500 border border-emerald-400 text-white font-bold">▶ Mở demo game</a>
+            <button class="px-3 py-2 text-xs rounded-xl bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-200" onclick="renderOperationsReports()">↻ Cập nhật</button>
+          </div>
+        </div>
+      </div>
+      <div id="operations-reports-list" class="space-y-4"></div>
+    </section>
+
+    <section id="view-ecc" class="hidden space-y-6">
+      
+      <!-- Header Banner -->
+      <div class="glass-card p-6 border-purple-500/30 relative overflow-hidden">
+        <div class="absolute -right-10 -bottom-10 w-48 h-48 bg-purple-600/10 rounded-full blur-3xl pointer-events-none"></div>
+        <div class="flex items-start justify-between flex-wrap gap-4 relative z-10">
+          <div>
+            <div class="flex items-center gap-2">
+              <span class="text-xs px-2.5 py-1 rounded-full bg-purple-500/20 text-purple-300 font-bold border border-purple-500/40">
+                ECC ENGINE • EVERYTHING CLAUDE CODE
+              </span>
+              <span class="text-xs text-slate-400">Quy trình kỹ thuật 3 bước chuẩn mực</span>
+            </div>
+            <h2 class="text-xl font-extrabold text-slate-100 mt-2 flex items-center gap-2">
+              <span>⚡</span> Xưởng Công Nghệ ECC — Bộ Ba Kỹ Thuật Làng Lá
+            </h2>
+            <p class="text-xs text-slate-400 mt-1 max-w-2xl leading-relaxed">
+              Xây dựng giải pháp công nghệ chuẩn mực cho công ty 1 người: 
+              <strong class="text-lime-300">Shikamaru</strong> lập bản đồ kiến trúc & phân rã kế hoạch ➔ 
+              <strong class="text-purple-300">Sasuke</strong> kích hoạt ECC Skills sinh code & TDD tests ➔ 
+              <strong class="text-sky-300">Kakashi</strong> dùng Hooks & Reviewer bảo mật kiểm định trước khi deploy!
+            </p>
+          </div>
+
+          <!-- 3 Agent Mini Badges -->
+          <div class="flex items-center gap-2 bg-slate-950/60 p-2.5 rounded-xl border border-slate-800">
+            <div class="flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-lime-950/40 border border-lime-500/30 text-lime-300 text-xs">
+              <span>♟️</span> <span class="font-bold">Shikamaru</span> (Arch)
+            </div>
+            <span class="text-slate-600">➔</span>
+            <div class="flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-purple-950/40 border border-purple-500/30 text-purple-300 text-xs">
+              <span>🔮</span> <span class="font-bold">Sasuke</span> (Skills)
+            </div>
+            <span class="text-slate-600">➔</span>
+            <div class="flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-sky-950/40 border border-sky-500/30 text-sky-300 text-xs">
+              <span>⚡</span> <span class="font-bold">Kakashi</span> (Hooks)
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Feature Input & Config Form -->
+      <div class="glass-card p-6 border-slate-800 space-y-4">
+        <div>
+          <label class="block text-xs font-bold uppercase tracking-wider text-slate-300 mb-1.5">
+            Mô tả tính năng công nghệ bạn muốn xây dựng:
+          </label>
+          <textarea id="ecc-goal-input" rows="3"
+                    class="w-full bg-slate-950 border border-slate-700/80 rounded-xl p-3.5 text-sm text-slate-200 placeholder-slate-500 focus:outline-none focus:border-purple-500"
+                    placeholder="Ví dụ: Xây dựng hệ thống tự động lưu leads từ form đăng ký vào Supabase, gửi thông báo qua Telegram và bắn email chào mừng bằng Resend API..."></textarea>
+        </div>
+
+        <div class="flex flex-wrap items-center justify-between gap-3">
+          <!-- Quick Preset Buttons -->
+          <div class="flex flex-wrap items-center gap-1.5 text-xs">
+            <span class="text-slate-500 mr-1">Mẫu gợi ý:</span>
+            <button class="px-2.5 py-1 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-lg border border-slate-700 transition-all"
+                    onclick="loadEccPreset('lead_crm')">
+              📥 Lead Form ➔ Telegram CRM
+            </button>
+            <button class="px-2.5 py-1 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-lg border border-slate-700 transition-all"
+                    onclick="loadEccPreset('qr_pay')">
+              💳 Webhook Xác nhận QR Pay
+            </button>
+            <button class="px-2.5 py-1 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-lg border border-slate-700 transition-all"
+                    onclick="loadEccPreset('ai_bot')">
+              🤖 Telegram AI Support Bot
+            </button>
+            <button class="px-2.5 py-1 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-lg border border-slate-700 transition-all"
+                    onclick="loadEccPreset('seo_blog')">
+              📝 Auto Blog Generator
+            </button>
+          </div>
+
+          <!-- Stack & Action -->
+          <div class="flex items-center gap-3">
+            <select id="ecc-stack-select" class="bg-slate-950 border border-slate-700 text-xs text-slate-300 rounded-xl px-3 py-2 focus:outline-none focus:border-purple-500">
+              <option value="node_full">Node.js + Express + Supabase</option>
+              <option value="next_full">Next.js 15 + Server Actions</option>
+              <option value="python_api">Python FastAPI + SQLite</option>
+              <option value="worker_api">Cloudflare Workers + Webhook</option>
+            </select>
+
+            <button id="btn-run-ecc-pipeline"
+                    class="px-5 py-2.5 bg-gradient-to-r from-purple-600 via-indigo-600 to-purple-500 hover:brightness-110 text-white font-bold text-xs rounded-xl shadow-lg shadow-purple-600/30 flex items-center gap-2"
+                    onclick="runEccPipeline()">
+              <span>🚀</span> Kích hoạt ECC Pipeline
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Pipeline Stepper Status Bar -->
+      <div id="ecc-stepper-container" class="hidden glass-card p-4 border-slate-800">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-3 text-xs">
+          <!-- Step 1 -->
+          <div id="ecc-step-1" class="p-3 rounded-xl bg-slate-900 border border-slate-800 flex items-center gap-3">
+            <span class="text-xl">♟️</span>
+            <div class="flex-1">
+              <div class="flex items-center justify-between">
+                <span class="font-bold text-slate-200">1. Shikamaru (ECC Plan)</span>
+                <span id="ecc-step-1-status" class="text-[10px] text-slate-500">Chờ lệnh</span>
+              </div>
+              <p class="text-[11px] text-slate-400 mt-0.5">Bản đồ kiến trúc & quy tắc RULES.md</p>
+            </div>
+          </div>
+          <!-- Step 2 -->
+          <div id="ecc-step-2" class="p-3 rounded-xl bg-slate-900 border border-slate-800 flex items-center gap-3">
+            <span class="text-xl">🔮</span>
+            <div class="flex-1">
+              <div class="flex items-center justify-between">
+                <span class="font-bold text-slate-200">2. Sasuke (ECC Skills)</span>
+                <span id="ecc-step-2-status" class="text-[10px] text-slate-500">Chờ lệnh</span>
+              </div>
+              <p class="text-[11px] text-slate-400 mt-0.5">Mã nguồn sạch & Bộ Unit Tests TDD</p>
+            </div>
+          </div>
+          <!-- Step 3 -->
+          <div id="ecc-step-3" class="p-3 rounded-xl bg-slate-900 border border-slate-800 flex items-center gap-3">
+            <span class="text-xl">⚡</span>
+            <div class="flex-1">
+              <div class="flex items-center justify-between">
+                <span class="font-bold text-slate-200">3. Kakashi (ECC Hooks)</span>
+                <span id="ecc-step-3-status" class="text-[10px] text-slate-500">Chờ lệnh</span>
+              </div>
+              <p class="text-[11px] text-slate-400 mt-0.5">AgentShield soi lỗi & Ký duyệt deploy</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Pipeline Output Workspace (Tabbed) -->
+      <div id="ecc-output-workspace" class="hidden glass-card overflow-hidden rounded-2xl border border-slate-800">
+        <!-- Sub-Tabs Header -->
+        <div class="flex items-center justify-between border-b border-slate-800 bg-slate-900/80 px-4 py-2 flex-wrap gap-2">
+          <div class="flex items-center gap-1">
+            <button id="ecc-subtab-arch" class="px-3 py-1.5 rounded-lg text-xs font-bold transition-all text-lime-300 bg-lime-500/20 border border-lime-500/40"
+                    onclick="switchEccSubtab('arch')">
+              ♟️ 1. Bản Đồ Kiến Trúc (Shikamaru)
+            </button>
+            <button id="ecc-subtab-code" class="px-3 py-1.5 rounded-lg text-xs font-bold transition-all text-slate-400 hover:text-white"
+                    onclick="switchEccSubtab('code')">
+              🔮 2. Code & Tests TDD (Sasuke)
+            </button>
+            <button id="ecc-subtab-qa" class="px-3 py-1.5 rounded-lg text-xs font-bold transition-all text-slate-400 hover:text-white"
+                    onclick="switchEccSubtab('qa')">
+              ⚡ 3. Kiểm Định & Duyệt (Kakashi)
+            </button>
+          </div>
+
+          <!-- Action buttons -->
+          <div class="flex items-center gap-2">
+            <button class="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs rounded-lg border border-slate-700 flex items-center gap-1.5"
+                    onclick="copyEccActiveTab()">
+              📋 Sao chép
+            </button>
+            <button class="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs rounded-lg border border-slate-700 flex items-center gap-1.5"
+                    onclick="downloadEccPackage()">
+              📥 Tải trọn bộ file
+            </button>
+            <button class="px-3 py-1.5 bg-emerald-600/90 hover:bg-emerald-500 text-white font-bold text-xs rounded-lg shadow-md flex items-center gap-1.5"
+                    onclick="pushEccToKanban()">
+              🏆 Đẩy vào Kanban (Deploy Ready)
+            </button>
+          </div>
+        </div>
+
+        <!-- Tab 1: Architecture Content -->
+        <div id="ecc-pane-arch" class="p-5 space-y-4">
+          <!-- Dynamically filled -->
+        </div>
+
+        <!-- Tab 2: Code & Tests Content -->
+        <div id="ecc-pane-code" class="hidden p-5 space-y-4">
+          <!-- Dynamically filled -->
+        </div>
+
+        <!-- Tab 3: Security & Approval Content -->
+        <div id="ecc-pane-qa" class="hidden p-5 space-y-4">
+          <!-- Dynamically filled -->
+        </div>
+      </div>
+
+    </section>
+
+    <!-- VIEW 6: SETTINGS -->
+    <section id="view-settings" class="hidden">
+      <div class="max-w-2xl mx-auto glass-card p-6 border-slate-800 space-y-6">
+        <div class="border-b border-slate-800 pb-3">
+          <h2 class="text-lg font-bold text-slate-100 flex items-center gap-2">
+            <span>⚙️</span> Cài Đặt AI & Hệ Thống
+          </h2>
+          <p class="text-xs text-slate-400">Cấu hình kết nối API thông minh hoặc sử dụng bộ giả lập thông minh offline có sẵn</p>
+        </div>
+
+        <div class="space-y-4">
+          <div>
+            <label class="block text-xs font-semibold text-slate-300 mb-1">Tên Founder (Hokage)</label>
+            <input type="text" id="setting-founder" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-sm text-slate-200">
+          </div>
+
+          <div>
+            <label class="block text-xs font-semibold text-slate-300 mb-1">Nhà Cung Cấp AI (AI Provider)</label>
+            <select id="setting-provider" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-sm text-slate-200">
+              <option value="gemini">Google Gemini (Khuyên dùng - Nhanh & Miễn phí)</option>
+              <option value="openai">OpenAI (GPT-4o, GPT-4o-mini)</option>
+            </select>
+          </div>
+
+          <div>
+            <label class="block text-xs font-semibold text-slate-300 mb-1">API Key</label>
+            <input type="password" id="setting-api-key" placeholder="Nhập API Key (để trống nếu muốn dùng chế độ Giả lập Offline thông minh)"
+                   class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-sm text-slate-200 placeholder-slate-600">
+            <p class="text-[11px] text-slate-500 mt-1">
+              💡 Bạn có thể lấy API Key Gemini hoàn toàn miễn phí tại <a href="https://aistudio.google.com" target="_blank" class="text-amber-400 underline">Google AI Studio</a>.
+            </p>
+          </div>
+
+          <div>
+            <label class="block text-xs font-semibold text-slate-300 mb-1">Model Name</label>
+            <input type="text" id="setting-model" placeholder="gemini-2.0-flash hoặc gpt-4o-mini"
+                   class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-sm text-slate-200">
+          </div>
+
+          <div class="pt-4 flex justify-end">
+            <button class="px-6 py-2.5 bg-amber-600 hover:bg-amber-500 text-white font-bold text-xs rounded-xl shadow-lg"
+                    onclick="saveSettingsFromUI()">
+              Lưu Cấu Hình
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ================= MODAL: NEW MISSION ================= -->
+  <div id="modal-new-mission" class="hidden fixed inset-0 z-50 modal-backdrop flex items-center justify-center p-4">
+    <div class="glass-card max-w-lg w-full p-6 border-amber-500/30 space-y-4 shadow-2xl">
+      <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+        <h3 class="font-bold text-base text-slate-100 flex items-center gap-2">
+          <span>📜</span> Giao Nhiệm Vụ Mới
+        </h3>
+        <button class="text-slate-400 hover:text-white" onclick="closeNewMissionModal()">✕</button>
+      </div>
+
+      <div class="space-y-3">
+        <div>
+          <label class="block text-xs font-semibold text-slate-300 mb-1">Tên Nhiệm Vụ</label>
+          <input type="text" id="new-mission-title" placeholder="Ví dụ: Tối ưu quy trình gửi email chăm sóc khách hàng"
+                 class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-sm text-slate-200">
+        </div>
+
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block text-xs font-semibold text-slate-300 mb-1">Cấp Độ Nhiệm Vụ (Rank)</label>
+            <select id="new-mission-rank" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-sm text-slate-200">
+              <option value="S">🔴 Cấp S (Sống còn / Doanh thu)</option>
+              <option value="A" selected>🟠 Cấp A (Chiến lược trọng yếu)</option>
+              <option value="B">🟡 Cấp B (Tự động hóa / Quy trình)</option>
+              <option value="C">🟢 Cấp C (Nội dung / Marketing)</option>
+              <option value="D">🔵 Cấp D (Nhiệm vụ cơ bản)</option>
+            </select>
+          </div>
+
+          <div>
+            <label class="block text-xs font-semibold text-slate-300 mb-1">Giao Cho Trưởng Phòng</label>
+            <select id="new-mission-assignee" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-sm text-slate-200">
+              <option value="naruto">🍥 Naruto (Điều hành)</option>
+              <option value="shikamaru">♟️ Shikamaru (Chiến lược)</option>
+              <option value="tsunade">💰 Tsunade (Tài chính & Quỹ)</option>
+              <option value="hinata">👁️ Hinata (Nghiên cứu Intel)</option>
+              <option value="jiraiya">✍️ Jiraiya (Marketing & Storytelling)</option>
+              <option value="sai">🎨 Sai (Design & Branding)</option>
+              <option value="sasuke">🔮 Sasuke (Tech & Automation)</option>
+              <option value="kakashi">⚡ Kakashi (Kiểm định QA)</option>
+              <option value="sakura">🌸 Sakura (Khách hàng & CRM)</option>
+            </select>
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-xs font-semibold text-slate-300 mb-1">Hạn Hoàn Thành</label>
+          <input type="date" id="new-mission-date" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-sm text-slate-200">
+        </div>
+
+        <div>
+          <label class="block text-xs font-semibold text-slate-300 mb-1">Mô Tả Chi Tiết & Yêu Cầu Đầu Ra</label>
+          <textarea id="new-mission-desc" rows="3" placeholder="Ghi chú chi tiết kết quả cần đạt được..."
+                    class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-sm text-slate-200"></textarea>
+        </div>
+      </div>
+
+      <div class="flex justify-end gap-2 pt-3 border-t border-slate-800">
+        <button class="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs rounded-xl"
+                onclick="closeNewMissionModal()">
+          Hủy Bỏ
+        </button>
+        <button class="px-5 py-2 bg-gradient-to-r from-amber-600 to-orange-500 hover:brightness-110 text-white font-bold text-xs rounded-xl shadow-md"
+                onclick="createNewMissionFromForm()">
+          Phát Lệnh Triển Khai ➔
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= MODAL: ROOM INSPECT (LIVE WORKING STATUS) ================= -->
+  <div id="modal-inspect-room" class="hidden fixed inset-0 z-50 modal-backdrop flex items-center justify-center p-4">
+    <div class="glass-card max-w-lg w-full p-6 border-amber-500/30 space-y-4 shadow-2xl">
+      <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+        <div class="flex items-center gap-3">
+          <div id="inspect-avatar" class="w-12 h-12 rounded-2xl bg-slate-800 flex items-center justify-center text-3xl shadow-inner">
+            🍥
+          </div>
+          <div>
+            <div class="flex items-center gap-2">
+              <h3 id="inspect-name" class="font-bold text-base text-slate-100">Naruto Uzumaki</h3>
+              <span class="text-[10px] px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 font-semibold flex items-center gap-1">
+                <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span> Đang làm việc
+              </span>
+            </div>
+            <p id="inspect-role" class="text-xs text-amber-400">Trưởng ban Điều hành</p>
+          </div>
+        </div>
+        <button class="text-slate-400 hover:text-white" onclick="closeInspectRoomModal()">✕</button>
+      </div>
+
+      <!-- Current Live Action Box -->
+      <div class="bg-slate-950/70 p-4 rounded-xl border border-slate-800 space-y-2">
+        <div class="flex items-center justify-between text-xs text-slate-400">
+          <span class="font-semibold uppercase tracking-wider text-slate-300">Công việc đang thực thi:</span>
+          <span class="text-emerald-400 font-mono">Tự động kích hoạt</span>
+        </div>
+        <p id="inspect-action" class="text-sm font-semibold text-slate-200">
+          Đang duyệt danh sách nhiệm vụ cấp S và phân bổ tài nguyên...
+        </p>
+      </div>
+
+      <!-- Live Performance Gauges -->
+      <div class="grid grid-cols-3 gap-3">
+        <div class="bg-slate-900/80 p-3 rounded-xl border border-slate-800 text-center">
+          <div class="text-xs text-slate-400 mb-1">Hiệu suất</div>
+          <div id="inspect-productivity" class="text-base font-extrabold text-amber-400">98%</div>
+          <div class="text-[10px] text-emerald-400">Tối ưu</div>
+        </div>
+        <div class="bg-slate-900/80 p-3 rounded-xl border border-slate-800 text-center">
+          <div class="text-xs text-slate-400 mb-1">Tập trung</div>
+          <div id="inspect-focus" class="text-base font-extrabold text-sky-400">100%</div>
+          <div class="text-[10px] text-sky-400">Deep Work</div>
+        </div>
+        <div class="bg-slate-900/80 p-3 rounded-xl border border-slate-800 text-center">
+          <div class="text-xs text-slate-400 mb-1">Chakra</div>
+          <div id="inspect-chakra" class="text-base font-extrabold text-purple-400">89%</div>
+          <div class="text-[10px] text-purple-400">Đầy năng lượng</div>
+        </div>
+      </div>
+
+      <!-- Missions Assigned -->
+      <div>
+        <div class="text-xs font-semibold text-slate-300 mb-2 flex items-center justify-between">
+          <span>Nhiệm vụ đang phụ trách:</span>
+          <span id="inspect-mission-count" class="text-amber-400 text-xs">2 tasks</span>
+        </div>
+        <div id="inspect-missions-list" class="space-y-1.5 max-h-32 overflow-y-auto">
+          <!-- Dynamically populated -->
+        </div>
+      </div>
+
+      <!-- Quick Action Buttons -->
+      <div class="flex justify-end gap-2 pt-3 border-t border-slate-800">
+        <button class="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs rounded-xl"
+                onclick="closeInspectRoomModal()">
+          Đóng
+        </button>
+        <button id="inspect-btn-chat" class="px-4 py-2 bg-gradient-to-r from-amber-600 to-orange-500 hover:brightness-110 text-white font-bold text-xs rounded-xl shadow-md flex items-center gap-1.5"
+                onclick="inspectJumpToChat()">
+          <span>💬</span> Vào phòng làm việc ➔
+        </button>
+      </div>
+    </div>
+  </div>
+  </div>
+
+  <!-- App Script -->
+  <script src="app.js"></script>
+</body>
+</html>
+

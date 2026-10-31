@@ -1,0 +1,403 @@
+/* Konoha Solopreneur OS - Styles */
+:root {
+  --bg-dark: #0f1117;
+  --bg-card: #181b26;
+  --bg-card-hover: #222636;
+  --border-color: rgba(255, 255, 255, 0.08);
+  --text-main: #f1f5f9;
+  --text-muted: #94a3b8;
+  
+  --naruto-orange: #ff781f;
+  --naruto-glow: rgba(255, 120, 31, 0.25);
+  
+  --shikamaru-green: #84cc16;
+  --shikamaru-glow: rgba(132, 204, 22, 0.25);
+  
+  --kakashi-blue: #38bdf8;
+  --kakashi-glow: rgba(56, 189, 248, 0.25);
+  
+  --sakura-pink: #fb7185;
+  --sakura-glow: rgba(251, 113, 133, 0.25);
+  
+  --sasuke-violet: #a855f7;
+  --sasuke-glow: rgba(168, 85, 247, 0.25);
+  
+  --hinata-lavender: #c084fc;
+  --hinata-glow: rgba(192, 132, 252, 0.25);
+  
+  --gold-konoha: #eab308;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  background-color: var(--bg-dark);
+  color: var(--text-main);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  overflow-x: hidden;
+}
+
+/* Custom Scrollbars */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.2);
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+/* Glassmorphism Card */
+.glass-card {
+  background: rgba(24, 27, 38, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--border-color);
+  border-radius: 14px;
+}
+
+.glass-card-interactive {
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.glass-card-interactive:hover {
+  transform: translateY(-2px);
+  border-color: rgba(255, 255, 255, 0.2);
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.4);
+}
+
+/* Room Borders & Glows */
+.border-naruto { border-color: var(--naruto-orange); }
+.border-shikamaru { border-color: var(--shikamaru-green); }
+.border-kakashi { border-color: var(--kakashi-blue); }
+.border-sakura { border-color: var(--sakura-pink); }
+.border-sasuke { border-color: var(--sasuke-violet); }
+.border-hinata { border-color: var(--hinata-lavender); }
+.border-jiraiya { border-color: #dc2626; }
+.border-sai { border-color: #64748b; }
+.border-tsunade { border-color: #ca8a04; }
+
+.glow-naruto { box-shadow: 0 0 20px var(--naruto-glow); }
+.glow-shikamaru { box-shadow: 0 0 20px var(--shikamaru-glow); }
+.glow-kakashi { box-shadow: 0 0 20px var(--kakashi-glow); }
+.glow-sakura { box-shadow: 0 0 20px var(--sakura-glow); }
+.glow-sasuke { box-shadow: 0 0 20px var(--sasuke-glow); }
+.glow-hinata { box-shadow: 0 0 20px var(--hinata-glow); }
+.glow-jiraiya { box-shadow: 0 0 20px rgba(220, 38, 38, 0.25); }
+.glow-sai { box-shadow: 0 0 20px rgba(100, 116, 139, 0.25); }
+.glow-tsunade { box-shadow: 0 0 20px rgba(202, 138, 4, 0.25); }
+
+/* Animation Pulse for Thinking */
+@keyframes chakraPulse {
+  0% { transform: scale(1); opacity: 0.8; }
+  50% { transform: scale(1.05); opacity: 1; filter: drop-shadow(0 0 10px var(--gold-konoha)); }
+  100% { transform: scale(1); opacity: 0.8; }
+}
+
+.chakra-thinking {
+  animation: chakraPulse 1.8s infinite ease-in-out;
+}
+
+/* Tabs and Active indicators */
+.nav-tab {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  color: var(--text-muted);
+}
+.nav-tab:hover {
+  color: var(--text-main);
+  background: rgba(255, 255, 255, 0.05);
+}
+.nav-tab.active {
+  color: #fff;
+  background: rgba(234, 179, 8, 0.15);
+  border: 1px solid rgba(234, 179, 8, 0.4);
+}
+
+/* Mission Rank Badges */
+.rank-badge {
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 6px;
+  font-size: 11px;
+  letter-spacing: 0.5px;
+}
+.rank-S { background: #ef4444; color: #fff; box-shadow: 0 0 10px rgba(239, 68, 68, 0.4); }
+.rank-A { background: #f97316; color: #fff; }
+.rank-B { background: #eab308; color: #1e1e1e; }
+.rank-C { background: #22c55e; color: #fff; }
+.rank-D { background: #3b82f6; color: #fff; }
+
+/* Markdown styling inside Agent Responses */
+.agent-response {
+  line-height: 1.65;
+  font-size: 14px;
+}
+.agent-response p {
+  margin-bottom: 12px;
+}
+.agent-response ul, .agent-response ol {
+  margin-left: 20px;
+  margin-bottom: 12px;
+}
+.agent-response li {
+  margin-bottom: 6px;
+}
+.agent-response pre {
+  background: #0b0c10;
+  padding: 12px;
+  border-radius: 8px;
+  overflow-x: auto;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  margin-bottom: 12px;
+}
+.agent-response code {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 13px;
+  color: #38bdf8;
+}
+.agent-response h3 {
+  font-size: 16px;
+  font-weight: 600;
+  margin-top: 14px;
+  margin-bottom: 8px;
+  color: #f8fafc;
+}
+
+/* Modal Backdrop */
+.modal-backdrop {
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(8px);
+}
+
+/* ================= WORKING CHARACTER ANIMATIONS ================= */
+
+/* Room Hotspot Container */
+.room-hotspot {
+  position: absolute;
+  border-radius: 12px;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  pointer-events: auto;
+}
+.room-hotspot:hover {
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: brightness(1.1);
+}
+
+/* Room 1: Naruto - Writing & Chakra Flames */
+@keyframes flameAura {
+  0%, 100% { opacity: 0.5; transform: scale(1); filter: drop-shadow(0 0 6px rgba(255, 120, 31, 0.6)); }
+  50% { opacity: 0.9; transform: scale(1.08); filter: drop-shadow(0 0 14px rgba(255, 120, 31, 0.9)); }
+}
+.naruto-aura {
+  animation: flameAura 2.2s infinite ease-in-out;
+}
+
+@keyframes quillWriting {
+  0% { transform: translate(0, 0) rotate(0deg); }
+  25% { transform: translate(4px, -2px) rotate(-8deg); }
+  50% { transform: translate(8px, 1px) rotate(4deg); }
+  75% { transform: translate(3px, -3px) rotate(-5deg); }
+  100% { transform: translate(0, 0) rotate(0deg); }
+}
+.quill-anim {
+  animation: quillWriting 1.5s infinite ease-in-out;
+}
+
+/* Room 2: Shikamaru - Shogi Think & Tactical Radar */
+@keyframes shogiPulse {
+  0% { transform: scale(0.9); opacity: 0.2; }
+  50% { transform: scale(1.15); opacity: 0.6; }
+  100% { transform: scale(0.9); opacity: 0.2; }
+}
+.shogi-pulse {
+  animation: shogiPulse 3s infinite ease-in-out;
+}
+
+@keyframes thoughtFloat {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-5px); }
+}
+.thought-anim {
+  animation: thoughtFloat 2.5s infinite ease-in-out;
+}
+
+/* Room 3: Kakashi - Lightning Spark & Checkmark Ping */
+@keyframes chidoriSpark {
+  0%, 90%, 100% { opacity: 0; transform: scale(0.8); }
+  92% { opacity: 1; transform: scale(1.2); filter: drop-shadow(0 0 8px #38bdf8); }
+  96% { opacity: 0.8; transform: scale(1.05); }
+}
+.chidori-spark {
+  animation: chidoriSpark 3.5s infinite ease-in-out;
+}
+
+@keyframes checkmarkPing {
+  0% { transform: scale(0.8); opacity: 0.4; }
+  50% { transform: scale(1.15); opacity: 1; filter: drop-shadow(0 0 6px #22c55e); }
+  100% { transform: scale(0.8); opacity: 0.4; }
+}
+.checkmark-ping {
+  animation: checkmarkPing 2s infinite ease-in-out;
+}
+
+/* Room 4: Sakura - Floating Speech Bubbles & Petals */
+@keyframes bubbleFloat {
+  0% { transform: translateY(8px) scale(0.85); opacity: 0; }
+  30% { opacity: 0.95; transform: translateY(0) scale(1); }
+  70% { opacity: 0.95; transform: translateY(-8px) scale(1.02); }
+  100% { transform: translateY(-16px) scale(0.9); opacity: 0; }
+}
+.bubble-float-1 {
+  animation: bubbleFloat 3s infinite ease-out;
+}
+.bubble-float-2 {
+  animation: bubbleFloat 3.8s 1.5s infinite ease-out;
+}
+
+@keyframes petalDrift {
+  0% { transform: translate(0, 0) rotate(0deg); opacity: 0; }
+  20% { opacity: 0.8; }
+  80% { opacity: 0.8; }
+  100% { transform: translate(25px, 35px) rotate(180deg); opacity: 0; }
+}
+.petal-drift {
+  animation: petalDrift 4.5s infinite linear;
+}
+
+/* Room 5: Sasuke - Terminal Code Streams & Server Blinking */
+@keyframes codeScan {
+  0% { transform: translateY(-100%); }
+  100% { transform: translateY(100%); }
+}
+.code-scan-line {
+  position: absolute;
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, #a855f7, #38bdf8, transparent);
+  animation: codeScan 2s infinite linear;
+}
+
+@keyframes serverLed1 {
+  0%, 100% { background-color: #22c55e; box-shadow: 0 0 6px #22c55e; }
+  50% { background-color: #15803d; box-shadow: none; }
+}
+@keyframes serverLed2 {
+  0%, 100% { background-color: #3b82f6; box-shadow: 0 0 6px #3b82f6; }
+  30% { background-color: #ef4444; box-shadow: 0 0 6px #ef4444; }
+  70% { background-color: #1e3a8a; box-shadow: none; }
+}
+.led-1 { animation: serverLed1 1s infinite alternate; }
+.led-2 { animation: serverLed2 0.7s infinite alternate; }
+
+/* Room 6: Hinata - Byakugan Sonar Waves & Potion Bubbles */
+@keyframes byakuganRadar {
+  0% { transform: scale(0.2); opacity: 0.8; border-color: rgba(192, 132, 252, 0.8); }
+  50% { opacity: 0.4; }
+  100% { transform: scale(1.6); opacity: 0; border-color: rgba(192, 132, 252, 0); }
+}
+.byakugan-radar {
+  animation: byakuganRadar 2.8s infinite ease-out;
+}
+
+@keyframes potionBubble {
+  0% { transform: translateY(0) scale(0.6); opacity: 0; }
+  50% { opacity: 0.9; }
+  100% { transform: translateY(-12px) scale(1.1); opacity: 0; }
+}
+.potion-bubble {
+  animation: potionBubble 1.8s infinite ease-in;
+}
+
+/* Room 7: Jiraiya - Floating Scrolls & Toad Flame Spark */
+@keyframes scrollFloat {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  50% { transform: translateY(-5px) rotate(4deg); }
+}
+.scroll-float {
+  animation: scrollFloat 3s infinite ease-in-out;
+}
+@keyframes fireSpark {
+  0%, 100% { opacity: 0.3; transform: scale(0.9); }
+  50% { opacity: 0.9; transform: scale(1.15); filter: drop-shadow(0 0 10px #ef4444); }
+}
+.fire-spark {
+  animation: fireSpark 2.2s infinite ease-in-out;
+}
+
+/* Room 8: Sai - Ink Brush & Flying Ink Beast */
+@keyframes inkDraw {
+  0% { transform: rotate(0deg) translate(0, 0); }
+  25% { transform: rotate(-8deg) translate(-3px, 2px); }
+  50% { transform: rotate(6deg) translate(4px, -3px); }
+  75% { transform: rotate(-4deg) translate(-2px, 1px); }
+  100% { transform: rotate(0deg) translate(0, 0); }
+}
+.ink-brush-anim {
+  animation: inkDraw 2s infinite ease-in-out;
+}
+@keyframes inkBeastGlide {
+  0% { transform: translate(-8px, 8px) scale(0.8); opacity: 0; }
+  30% { opacity: 0.85; }
+  70% { opacity: 0.85; }
+  100% { transform: translate(16px, -14px) scale(1.1); opacity: 0; }
+}
+.ink-beast-anim {
+  animation: inkBeastGlide 3.8s infinite linear;
+}
+
+/* Room 9: Tsunade - Coin Clinking & Diamond Seal Glow */
+@keyframes coinJingle {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  30% { transform: translateY(-4px) rotate(-12deg); }
+  60% { transform: translateY(-2px) rotate(8deg); }
+}
+.coin-anim {
+  animation: coinJingle 2.4s infinite ease-in-out;
+}
+@keyframes sealGlow {
+  0%, 100% { transform: scale(1); opacity: 0.6; filter: drop-shadow(0 0 4px #eab308); }
+  50% { transform: scale(1.25); opacity: 1; filter: drop-shadow(0 0 12px #ca8a04); }
+}
+.seal-glow-anim {
+  animation: sealGlow 2.5s infinite ease-in-out;
+}
+
+/* Live Ticker Bar */
+.ticker-wrap {
+  overflow: hidden;
+  white-space: nowrap;
+}
+@keyframes tickerMove {
+  0% { transform: translateX(100%); }
+  100% { transform: translateX(-100%); }
+}
+.ticker-content {
+  display: inline-block;
+  animation: tickerMove 28s infinite linear;
+}
+.ticker-content:hover {
+  animation-play-state: paused;
+}
+
+
