@@ -1,4 +1,24 @@
 # 🏯 KONOHA SOLOPRENEUR OS
+
+## 🍥 Điều phối công việc qua Naruto
+
+Mọi nhiệm vụ thực đi qua Naruto trước. Naruto phân tích brief, chọn tối đa năm phòng ban chuyên môn phù hợp, giao đầu việc và đầu ra cho từng phòng ban; Kakashi luôn làm cổng QA cuối. App, web và mã nguồn được giao cho Sasuke xây dựng sau khi có đầu vào chuyên môn phù hợp. Kế hoạch, các phòng ban được giao, tiến độ, blocker và kết quả được ghi ở **Báo cáo Tiến độ**.
+
+Phiếu giao việc, lệnh công việc trong chat Naruto, yêu cầu công việc gửi ở chat phòng ban, nhiệm vụ mới từ Kanban, việc đẩy từ Xưởng ECC và follow-up từ Hội đồng đều được chuyển qua Naruto. Chat phòng ban vẫn có thể dùng để hỏi tư vấn; yêu cầu thực hiện sẽ được chuyển sang Naruto.
+
+Để chạy AI thật, chọn nhà cung cấp và model tại **Cài đặt AI**, nhập API key rồi lưu để app xác thực. GitHub Copilot cần đăng nhập CLI bằng `copilot login`. Thiếu key/đăng nhập thì job ở trạng thái bị chặn, không tạo artifact giả. API key được gửi qua localhost khi tạo job và không ghi vào hồ sơ job. Không gửi key trong chat.
+
+App artifact được lưu trong `deliveries/<job-id>/`; các đầu ra khác được tổng hợp trong `REPORT.md`. Job kết thúc ở `needs_founder_product_confirmation` hoặc `blocked_qa`; Founder vẫn là người xác nhận cuối cùng. Các API provider có thể tính phí hoặc giới hạn quota.
+
+### Runner nền Naruto
+
+Server xử lý job theo hàng đợi tuần tự, nên có thể đóng tab trình duyệt trong lúc job đang chạy. Lỗi provider tạm thời (429, 5xx hoặc lỗi mạng) được thử lại tối đa 3 lần, với thời gian chờ tăng dần. Server lưu báo cáo kiểm tra tiến độ mỗi 2 giờ cho job đang hoạt động; mở lại Báo cáo Tiến độ để xem. Khi hàng đợi trống, Naruto chờ Founder giao việc mới và không tự tạo task.
+
+### Skill tái sử dụng cho Agent Harness
+
+Sáu Codex Skill dùng chung nằm trong `.agents/skills/`: `task-brief-routing`, `evidence-first-research`, `short-video-content-pack`, `build-and-verify`, `independent-qa`, và `campaign-metrics`. `app.js` gắn skill phù hợp vào prompt từng phòng ban; `AGENTS.md` định tuyến công việc Codex. Đây là hướng dẫn tái sử dụng, không phải worker chạy nền độc lập.
+
+Runner chỉ hoạt động khi tiến trình `node server.js` còn chạy. Sau khi Windows hoặc server khởi động lại, job đang chạy được đánh dấu `interrupted` vì API key không được lưu để tự tiếp tục; hãy gửi lại task qua Naruto. Tiến độ hai giờ là báo cáo nội bộ trong app, không gửi thông báo ra ngoài.
 ### Hệ Điều Hành Công Ty 1 Người với 9 AI Agents Làng Lá (3 Tầng Trụ Sở)
 
 Ứng dụng web điều hành doanh nghiệp cá nhân (Solopreneur) toàn diện được thiết kế và nhân bản trực tiếp từ **Trụ sở Làng Lá 3 tầng 9 phòng ban**:
@@ -22,24 +42,15 @@
 
 ## 🚀 Cách khởi chạy ứng dụng
 
-### Cách 1: Chạy trực tiếp (Không cần cài đặt)
-Mở trực tiếp file `index.html` bằng bất kỳ trình duyệt nào (Google Chrome, Microsoft Edge, Safari, Firefox).
-
-### Cách 2: Chạy với Node.js Server (Khuyên dùng)
-Mở Terminal / PowerShell tại thư mục `D:\Demo` và chạy lệnh:
+### Chạy đầy đủ với Node.js
+Trong thư mục repository, chạy:
 ```bash
-node server.js
-```
-Hoặc:
-```bash
+npm ci
 npm start
 ```
-Sau đó truy cập: **`http://localhost:3000`**
+Sau đó truy cập: **`http://localhost:3001`**.
 
-### Cách 3: Chạy với Python
-```bash
-python -m http.server 3000
-```
+Mở trực tiếp `index.html` hoặc dùng GitHub Pages chỉ phục vụ giao diện tĩnh; API, runner AI và lịch Naruto cần Node.js backend đang chạy. GitHub Pages không làm backend chạy 24/7.
 
 ---
 
@@ -80,9 +91,19 @@ python -m http.server 3000
 ## ⚙️ Cấu hình AI & API Key
 
 Vào mục **Cài đặt (⚙️)** ở góc trên bên phải:
-- **Chế độ Không cần API Key (Offline Simulator):** Mặc định ứng dụng đã tích hợp sẵn bộ não giả lập thông minh bám sát nghiệp vụ Solopreneur. Bạn có thể sử dụng ngay mà không tốn 1 xu chi phí!
-- **Chế độ Real AI (Khuyên dùng):**
-  - Nhập **Google Gemini API Key** (Lấy miễn phí tại [Google AI Studio](https://aistudio.google.com)).
-  - Hoặc nhập **OpenAI API Key**.
-  - Các Agent sẽ phân tích và trả lời theo thời gian thực với trí tuệ nhân tạo đỉnh cao!
+- Chọn Gemini, OpenAI/Codex, Anthropic, DeepSeek, Groq, OpenRouter, API tương thích OpenAI hoặc GitHub Copilot.
+- Nút lưu sẽ kiểm tra key/đăng nhập trước khi xác nhận cấu hình. Nếu key sai, thiếu quyền, hết quota hoặc provider không kết nối được, app báo trạng thái và không lưu cấu hình đó.
+- Khi chưa có API key hoặc Copilot login, hội thoại có thể dùng mô phỏng; job thực sẽ bị chặn và báo Founder, không được xem là đã chạy AI thật.
+
+## Tự động hóa chiến dịch TikTok
+
+Chạy `start.bat` hoặc `npm start`; mở mục **Naruto Điều phối** để xem thẻ **TikTok · @cinetech.ai**. Server lưu kế hoạch 10 ngày, trạng thái từng video, follower Founder đọc lại và nhật ký kiểm tra tại `.automation-jobs/tiktok-campaign.json`.
+
+- Naruto ghi báo cáo tiến độ mỗi 2 giờ khi server local đang chạy. Sau khi server khởi động lại, monitor tiếp tục từ mốc đã lưu.
+- Cập nhật follower chỉ sau khi đọc số trên hồ sơ TikTok; app ghi nguồn là Founder read-back và không gọi TikTok Analytics API.
+- Trạng thái bài có thể ghi là đã dựng, đã duyệt, đã tải nhưng chưa xác minh, hoặc đã đăng có URL đọc lại. Ghi “đã đăng” yêu cầu URL video TikTok thuộc `@cinetech.ai`.
+- Thẻ của từng phòng ban trên trang Trụ sở hiển thị toàn bộ đầu việc liên quan, trạng thái, đầu ra và ghi chú; phần chi tiết có thể mở ngay trên thẻ.
+- Lịch đăng dùng Asia/Bangkok, từ 11 đến 20/11/2026. Giờ đăng là giả thuyết để theo dõi; không đảm bảo đạt 1.000 follower.
+- Ứng dụng không tự đăng, bình luận, nhắn tin, mua quảng cáo, hoặc tạo số liệu. Upload và công bố vẫn qua TikTok Studio và cần Founder duyệt.
+- Dữ liệu `.automation-jobs`, `.copilot-data`, `.git`, `node_modules` và `.env*` bị chặn khỏi static web server.
 

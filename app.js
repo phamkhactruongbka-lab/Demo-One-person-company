@@ -174,56 +174,92 @@ const DEPARTMENT_CAPABILITIES = {
   naruto: {
     operationalAgents: ["COO / Task Orchestrator", "Program Manager", "Status Report & Dependency Mapper"],
     skills: ["Project decomposition", "Timeline & milestone planning", "Kanban & weekly review", "Blocker escalation", "Specialist-agent routing"],
+    skillRefs: ["task-brief-routing", "campaign-metrics"],
     outcome: "Kế hoạch theo mốc, owner, đầu ra, dependency, trạng thái và báo cáo Founder.",
     approval: "Không tự cam kết với khách hàng hoặc thay Founder quyết định ưu tiên."
   },
   shikamaru: {
     operationalAgents: ["Business Strategist", "Unit Economics Analyst"],
     skills: ["Affiliate unit economics", "Định giá SaaS/tool", "ROI & risk scenarios"],
+    skillRefs: ["campaign-metrics"],
     outcome: "Đề xuất ưu tiên, giá bán và giả định lợi nhuận có thể kiểm tra.",
     approval: "Founder duyệt ngân sách, giá cuối cùng và mọi khoản chi."
   },
   kakashi: {
     operationalAgents: ["QA Release Gate", "Security & SOP Reviewer"],
     skills: ["QA regression", "Secret/API-key review", "SMT release checklist"],
+    skillRefs: ["independent-qa", "build-and-verify"],
     outcome: "Biên bản PASS, NEEDS REVIEW hoặc BLOCKED kèm bằng chứng.",
     approval: "Có quyền chặn phát hành; không tự chứng nhận chất lượng sản xuất."
   },
   sakura: {
     operationalAgents: ["CRM Assistant", "Affiliate & DOP Content Planner"],
     skills: ["Proposal & CRM", "Content brief / shot-list", "Disclosure & follow-up"],
+    skillRefs: ["task-brief-routing", "short-video-content-pack"],
     outcome: "Bản nháp proposal, kịch bản, lịch chăm sóc và nội dung có disclosure.",
     approval: "Không tự gửi, đăng bài, nhận tiền hoặc dùng tài khoản bên ngoài."
   },
   sasuke: {
     operationalAgents: ["Full-stack Builder", "Automation Engineer", "SMT Vision Engineer"],
     skills: ["Web/API & desktop tools", "n8n/webhook automation", "OpenCV/YOLO, fiducial & ROI"],
+    skillRefs: ["build-and-verify", "independent-qa"],
     outcome: "Mã nguồn, bản demo chạy được, log test và hướng dẫn vận hành.",
     approval: "Mọi automation có tác động bên ngoài phải có bước Founder duyệt."
   },
   hinata: {
     operationalAgents: ["Market Researcher", "Competitor Mapper", "SMT Trend Scout"],
     skills: ["Research with evidence", "Competitor mapping", "Opportunity & trend scan"],
+    skillRefs: ["evidence-first-research", "campaign-metrics"],
     outcome: "Evidence ledger: nguồn, ngày kiểm tra, nhận định và mức tin cậy.",
     approval: "Không trình bày số liệu suy đoán như dữ kiện đã xác minh."
   },
   jiraiya: {
     operationalAgents: ["Viral Storyteller", "Multi-channel Content Producer", "Thought Leadership Writer"],
     skills: ["Hook-Story-Offer formula", "Social viral scripts", "Newsletter & copy conversion", "Brand voice crafting"],
+    skillRefs: ["short-video-content-pack"],
     outcome: "Kịch bản viral, bản thảo email/bài viết có cấu trúc dẫn dắt cảm xúc và CTA sắc bén.",
     approval: "Không tự động đăng bài lên mạng xã hội nếu chưa có Founder kiểm duyệt nội dung."
   },
   sai: {
     operationalAgents: ["UI/UX Designer", "Brand Identity Specialist", "Visual Asset Crafter"],
     skills: ["Design system & tokens", "Figma wireframe & UI layout", "Conversion-centered design", "Visual typography"],
+    skillRefs: ["short-video-content-pack"],
     outcome: "Bộ quy chuẩn thiết kế (màu, font, component), wireframe chi tiết và hướng dẫn style UI.",
     approval: "Bản vẽ và giao diện cần Founder chốt mood & tone trước khi chuyển sang Sasuke dựng mã nguồn."
   },
   tsunade: {
     operationalAgents: ["Cashflow Comptroller", "Unit Economics & Runway Auditor", "Financial Risk Gate"],
     skills: ["Burn rate & runway calculation", "OpEx / CapEx modeling", "Profit margin stress-test", "Emergency fund sizing"],
+    skillRefs: ["campaign-metrics"],
     outcome: "Bảng kiểm soát dòng tiền, báo cáo sức khỏe tài chính, kịch bản rủi ro và khuyến nghị trích lập quỹ.",
     approval: "Chỉ đưa ra phân tích và cảnh báo tài chính; mọi lệnh giải ngân hoặc chuyển tiền do Founder toàn quyền quyết định."
+  }
+};
+
+const COMPANY_SKILLS = {
+  "task-brief-routing": {
+    name: "Giao việc chuẩn qua Naruto",
+    guide: "Chuẩn hóa yêu cầu thành mục tiêu, phạm vi, đầu ra bàn giao, tiêu chí nghiệm thu, owner/phòng ban, deadline, phụ thuộc và blocker. Naruto là cửa nhận việc và người điều phối cuối; giao tối đa 5 phòng ban phù hợp."
+  },
+  "evidence-first-research": {
+    name: "Nghiên cứu có bằng chứng",
+    guide: "Ưu tiên nguồn chính thức và nguồn sơ cấp; ghi URL, ngày truy cập, trích yếu và phạm vi. Tách dữ kiện, suy luận và điều chưa biết; không biến số ước tính thành dữ kiện."
+  },
+  "short-video-content-pack": {
+    name: "Bộ sản xuất video ngắn",
+    guide: "Bàn giao đối tượng khán giả, hook 1-3 giây, kịch bản theo cảnh, chữ trên màn hình/âm thanh, caption, CTA, hashtag và checklist tệp. Ghi nhãn AI/disclosure khi áp dụng; nội dung luôn là bản nháp chờ Founder duyệt, không tự đăng."
+  },
+  "build-and-verify": {
+    name: "Xây dựng và kiểm chứng",
+    guide: "Đọc cấu trúc repo và hướng dẫn trước khi sửa; thay đổi tối thiểu theo yêu cầu; nêu lệnh xác minh phù hợp, kết quả thật, giới hạn và cách khôi phục. Không tuyên bố chạy được nếu chưa có bằng chứng runtime."
+  },
+  "independent-qa": {
+    name: "QA độc lập",
+    guide: "Đối chiếu từng tiêu chí nghiệm thu với artifact hoặc kết quả kiểm tra độc lập. Phân loại PASS, NEEDS REVIEW hoặc BLOCKED; đính kèm bằng chứng và lỗi còn lại. Thiếu bằng chứng thì không phê duyệt; Kakashi không tự review phần mình làm."
+  },
+  "campaign-metrics": {
+    name: "KPI và checkpoint",
+    guide: "Ghi baseline, mục tiêu, số hiện tại, nguồn và thời điểm đọc, khoảng cách mục tiêu, xu hướng và quyết định/experiment kế tiếp. Số follower/chuyển đổi chỉ cập nhật từ nguồn đã quan sát; không bịa số hoặc bảo đảm kết quả."
   }
 };
 
@@ -313,18 +349,39 @@ class AppState {
     this.initializeFounderOnlyWorkspace();
     this.missions = this.loadMissions();
     this.settings = this.loadSettings();
+    if (this.settings.apiProvider === "gemini" && this.settings.modelName === "gemini-2.0-flash") {
+      this.settings.modelName = "gemini-3.8-flash";
+      localStorage.setItem("konoha_settings", JSON.stringify(this.settings));
+    }
     this.chatHistories = this.loadChatHistories();
     this.councilLog = this.loadCouncilLog();
     this.operationalPlans = this.loadOperationalPlans();
     this.founderNotifications = this.loadFounderNotifications();
+    this.narutoMonitor = this.loadNarutoMonitor();
     this.currentView = "diorama";
     this.activeAgentId = "naruto";
   }
 
   initializeFounderOnlyWorkspace() {
-    const workspaceEpoch = "founder-only-workspace-v1";
+    const workspaceEpoch = "founder-only-workspace-v2-clear-current-work";
     if (localStorage.getItem("konoha_workspace_epoch") === workspaceEpoch) return;
-    // Founder requested a clean project workspace. Preserve AI settings, clear only operational data.
+    // Archive current operational state before clearing it; preserve AI settings and generated artifacts.
+    const archiveKey = "konoha_work_archive";
+    let archive = [];
+    try { archive = JSON.parse(localStorage.getItem(archiveKey) || "[]"); } catch { archive = []; }
+    const previousWork = {
+      archivedAt: new Date().toISOString(),
+      missions: JSON.parse(localStorage.getItem("konoha_missions") || "[]"),
+      chats: JSON.parse(localStorage.getItem("konoha_chats") || "{}"),
+      councilLog: JSON.parse(localStorage.getItem("konoha_council_log") || "[]"),
+      operationalPlans: JSON.parse(localStorage.getItem("konoha_operational_plans") || "[]"),
+      founderNotifications: JSON.parse(localStorage.getItem("konoha_founder_notifications") || "[]")
+    };
+    if (previousWork.missions.length || previousWork.operationalPlans.length || Object.keys(previousWork.chats).length || previousWork.councilLog.length || previousWork.founderNotifications.length) {
+      archive.unshift(previousWork);
+      localStorage.setItem(archiveKey, JSON.stringify(archive.slice(0, 10)));
+    }
+    // Founder requested clearing current work. Keep recoverable local archive, AI settings, and generated artifacts.
     localStorage.setItem("konoha_missions", JSON.stringify([]));
     localStorage.setItem("konoha_chats", JSON.stringify({}));
     localStorage.setItem("konoha_council_log", JSON.stringify([]));
@@ -346,7 +403,8 @@ class AppState {
     return data ? JSON.parse(data) : {
       apiKey: "",
       apiProvider: "gemini", // "gemini" or "openai"
-      modelName: "gemini-2.0-flash",
+      apiBaseUrl: "",
+      modelName: "gemini-3.8-flash",
       founderName: "Hokage Founder",
       companyName: "Konoha Studio"
     };
@@ -386,6 +444,14 @@ class AppState {
   }
   saveFounderNotifications() {
     localStorage.setItem("konoha_founder_notifications", JSON.stringify(this.founderNotifications));
+  }
+
+  loadNarutoMonitor() {
+    const data = localStorage.getItem("konoha_naruto_monitor");
+    return data ? JSON.parse(data) : { lastCheckedAt: null, lastSummary: "Chưa có dữ liệu kiểm tra tiến độ." };
+  }
+  saveNarutoMonitor() {
+    localStorage.setItem("konoha_naruto_monitor", JSON.stringify(this.narutoMonitor));
   }
 }
 
@@ -462,46 +528,33 @@ function createNarutoWorkPlan(prompt) {
     return finalDue && candidate > finalDue ? finalDue : candidate;
   };
   const project = titleMatch ? titleMatch[1].trim() : (toddler ? "MVP trò chơi phát triển nhận thức cho trẻ 3 tuổi" : `MVP: ${prompt.trim().slice(0, 80)}`);
-  const templates = toddler ? [
-    ["Chốt brief an toàn và phạm vi 1 mini-game", "naruto", "S", 0, "Founder duyệt mục tiêu học tập, nền tảng, thời lượng và giới hạn không thu thập dữ liệu trẻ em."],
-    ["Nghiên cứu nhu cầu phụ huynh và evidence ledger", "hinata", "A", 1, "Nguồn, giả định, nhu cầu cần kiểm chứng và rủi ro nội dung."],
-    ["Xác định MVP, effort và tiêu chí thành công", "shikamaru", "A", 1, "Phạm vi tối thiểu, thời gian thực hiện và quyết định 80/20."],
-    ["Thiết kế luồng chơi và wireframe 3 màn hình", "sakura", "B", 2, "Kịch bản trải nghiệm phụ huynh/trẻ và asset list ở dạng bản nháp."],
-    ["Dựng prototype local không đăng nhập/không quảng cáo", "sasuke", "S", 4, "Prototype chạy cục bộ, hướng dẫn chạy và log kiểm thử."],
-    ["QA demo và quyết định phát hành", "kakashi", "A", 5, "Checklist QA, blocker, PASS / NEEDS REVIEW / BLOCKED. Không phát hành tự động."]
-  ] : [
-    ["Chốt mục tiêu, phạm vi MVP và định nghĩa Done", "naruto", "S", 0, "Brief được Founder duyệt và các tiêu chí hoàn thành rõ ràng."],
-    ["Nghiên cứu nhu cầu, đối thủ và bằng chứng", "hinata", "A", 1, "Evidence ledger gồm nguồn, ngày kiểm tra và giả định."],
-    ["Ưu tiên 80/20, chi phí và rủi ro", "shikamaru", "A", 1, "Kế hoạch ưu tiên, giới hạn chi phí và rủi ro cần Founder quyết."],
-    ["Tạo bản nháp nội dung/luồng khách hàng", "sakura", "B", 2, "Bản nháp nội dung hoặc proposal, chưa gửi/đăng bên ngoài."],
-    ["Xây dựng MVP và log kiểm thử", "sasuke", "S", 3, "Mã nguồn/demo chạy được, hướng dẫn và kết quả test."],
-    ["QA, SOP và release gate", "kakashi", "A", 4, "Kết luận PASS / NEEDS REVIEW / BLOCKED kèm bằng chứng."]
+  const templates = [
+    ["Naruto phân tích brief và chọn phòng ban", "naruto", "S", 0, "Chưa giao cho chuyên viên. Naruto sẽ lập kế hoạch, chọn phòng ban và tạo đầu việc theo từng năng lực."]
   ];
   return {
     id: planId,
     sourcePrompt: prompt,
     project,
     createdAt: new Date(now).toLocaleString(),
-    status: "pending_founder_approval",
+    status: "automation_queued",
     approval: {
-      status: "pending",
+      status: "automation",
       version: 1,
       requestedAt: new Date(now).toLocaleString()
     },
-    resultUrl: toddler ? "games/brain-spark/index.html" : "#",
-    resultLabel: toddler ? "Mở demo Chạm & Ghép" : "Mở báo cáo kế hoạch",
+    resultUrl: "#",
+    resultLabel: "Đang chờ Naruto phân công",
     milestones: templates.map(([title, assignee, rank, days, output]) => ({ title, assignee, rank, dueDate: addDays(days), output })),
     tasks: templates.map(([title, assignee, rank, days, desc], index) => ({
       id: `m-${now}-${index}`, planId, title, assignee, rank,
       dueDate: addDays(days), desc: `${desc} [Kế hoạch Naruto: ${project}]`,
-      // Founder must explicitly approve the proposed scope before any task starts.
-      status: "backlog"
+      status: index === 0 ? "in_progress" : "backlog"
     }))
   };
 }
 
 function createOperationalPlanFromNaruto(prompt) {
-  const duplicate = state.operationalPlans.find(plan => plan.sourcePrompt === prompt);
+  const duplicate = state.operationalPlans.find(plan => plan.sourcePrompt === prompt && ["automation_queued", "automation_running"].includes(plan.status));
   if (duplicate) return duplicate;
   const plan = createNarutoWorkPlan(prompt);
   state.operationalPlans.unshift(plan);
@@ -511,11 +564,173 @@ function createOperationalPlanFromNaruto(prompt) {
   return plan;
 }
 
+function syncNarutoDepartmentAssignments(plan, assignments) {
+  if (!plan || !Array.isArray(assignments) || !assignments.length) return;
+  plan.departmentAssignments = assignments.map(item => ({ ...item }));
+  const prior = new Map(state.missions.filter(task => task.planId === plan.id).map(task => [task.assignee, task]));
+  const dueDate = prior.values().next().value?.dueDate || new Date(Date.now() + 3 * 86400000).toISOString().split("T")[0];
+  const tasks = assignments.map((item, index) => {
+    const existing = prior.get(item.departmentId);
+    return {
+      ...(existing || {}), id: existing?.id || `m-${plan.id}-${index}`, planId: plan.id,
+      assignee: item.departmentId, rank: existing?.rank || "A", dueDate,
+      title: `${item.departmentName}: ${item.task}`,
+      desc: `Naruto giao: ${item.task} Đầu ra cần nộp: ${item.deliverable}`,
+      status: item.status === "in_progress" ? "in_progress" : item.status === "completed" ? "reviewing" : "backlog"
+    };
+  });
+  state.missions = state.missions.filter(task => task.planId !== plan.id);
+  state.missions.unshift(...tasks);
+  plan.milestones = tasks.map(task => ({ title: task.title, assignee: task.assignee, rank: task.rank, dueDate: task.dueDate, output: task.desc }));
+  state.saveMissions();
+}
+
+function appendNarutoChatMessage(sender, text, planId) {
+  const history = state.chatHistories.naruto || (state.chatHistories.naruto = []);
+  if (planId && history.some(item => item.planId === planId && item.sender === sender)) return;
+  history.push({ sender, text, planId, time: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }) });
+  state.saveChatHistories();
+}
+
+function handoffPlanToNarutoChat(plan, founderText) {
+  state.activeAgentId = "naruto";
+  appendNarutoChatMessage("user", founderText, plan.id);
+  appendNarutoChatMessage("agent", "Naruto đã nhận việc và đang chọn phòng ban phù hợp. Theo dõi phân công, tiến độ và blocker trong Báo cáo Tiến độ.", plan.id);
+  if (!plan.automationJobId && plan.status === "automation_queued") {
+    startNarutoOrchestration(plan);
+    runNarutoProgressCheck(false);
+  }
+  switchView("chat");
+  renderAgentChatView();
+  return plan;
+}
+
+function routeWorkRequestToNaruto(request, sourceAgentId = null) {
+  const sourceAgent = AGENTS[sourceAgentId];
+  const brief = `# PHIẾU GIAO VIỆC QUA NARUTO\nTASK_TITLE: ${request.trim().split(/[\r\n.!?]/)[0].slice(0, 100)}\nWORKSPACE: Workspace local theo cấu hình task\n\nOBJECTIVE:\n${request.trim()}\n\nREQUIRED_ARTIFACT:\nĐầu ra phù hợp với yêu cầu; nếu là app/web thì tạo preview local.\n\nACCEPTANCE_AND_TEST:\nNaruto phải chọn phòng ban phù hợp, giao đầu việc và đầu ra rõ ràng; Kakashi kiểm tra acceptance; báo Founder mọi blocker.\n${sourceAgent ? `\nYêu cầu được gửi khi đang mở phòng ${sourceAgent.name}; đây chỉ là ngữ cảnh tham khảo, Naruto vẫn là người giao việc.` : ""}`;
+  const plan = createOperationalPlanFromNaruto(brief);
+  return handoffPlanToNarutoChat(plan, request.trim());
+}
+
 function getPlanApprovalCopy(plan) {
   const approval = plan.approval || { status: "pending", version: 1 };
+  if (approval.status === "automation") return { label: "Naruto đang điều phối", className: "text-sky-300", detail: "Naruto đang chọn phòng ban phù hợp; Kakashi sẽ kiểm tra đầu ra trước khi Founder xác nhận." };
+  if (approval.status === "blocked") return { label: "Kakashi chặn bàn giao", className: "text-rose-300", detail: plan.automationError || "Cổng QA phát hiện blocker; cần xử lý trước khi Founder duyệt." };
+  if (approval.status === "blocked_no_api") return { label: "Naruto đang chờ API/xác thực", className: "text-rose-300", detail: plan.automationError || "Bổ sung API key hoặc đăng nhập provider rồi gửi lại việc." };
+  if (approval.status === "interrupted") return { label: "Job bị ngắt", className: "text-rose-300", detail: plan.automationError || "Server đã khởi động lại; cần gửi lại task qua Naruto." };
+  if (approval.status === "failed") return { label: "Job lỗi", className: "text-rose-300", detail: plan.automationError || "Naruto chưa hoàn tất điều phối." };
+  if (approval.status === "final_review" && plan.qaDisposition === "NEEDS_REVIEW") return { label: "Kakashi yêu cầu Founder xem thêm", className: "text-amber-300", detail: "Artifact đã sẵn sàng; Kakashi nêu các mục cần Founder xem trước khi chấp nhận." };
+  if (approval.status === "final_review") return { label: "Sản phẩm sẵn sàng để Founder xác nhận", className: "text-emerald-300", detail: "Artifact và báo cáo QA đã được tạo; Founder vẫn xác nhận cuối." };
   if (approval.status === "approved") return { label: "Đã chấp nhận — đang triển khai", className: "text-emerald-300", detail: `Founder đã chấp nhận lúc ${approval.decidedAt || "chưa rõ"}.` };
   if (approval.status === "rejected") return { label: "Đã từ chối — phương án này đã huỷ", className: "text-rose-300", detail: approval.reason ? `Lý do: ${approval.reason}` : "Founder yêu cầu làm lại phương án khác." };
   return { label: "Chờ Founder duyệt", className: "text-amber-300", detail: "Chưa có task nào được phép triển khai." };
+}
+
+async function startNarutoOrchestration(plan) {
+  plan.status = 'automation_queued';
+  plan.automationError = null;
+  plan.automationEvents = [];
+  plan.approval = { ...plan.approval, status: 'automation' };
+  plan.departmentAssignments = [];
+  plan.departmentOutputs = {};
+  plan.narutoPlan = '';
+  const oldTasks = state.missions.filter(task => task.planId === plan.id);
+  const dueDate = oldTasks[0]?.dueDate || new Date(Date.now() + 3 * 86400000).toISOString().split('T')[0];
+  state.missions = state.missions.filter(task => task.planId !== plan.id);
+  state.missions.unshift({ id: `m-${plan.id}-naruto-${Date.now()}`, planId: plan.id, title: 'Naruto phân tích brief và chọn phòng ban', assignee: 'naruto', rank: 'S', dueDate, desc: 'Chưa giao cho chuyên viên; Naruto đang chọn phòng ban và đầu ra.', status: 'in_progress' });
+  plan.milestones = [{ title: 'Naruto phân tích brief và chọn phòng ban', assignee: 'naruto', rank: 'S', dueDate, output: 'Đang điều phối.' }];
+  state.saveMissions();
+  state.saveOperationalPlans();
+  updateNarutoApiNotice();
+  try {
+    const response = await fetch('/api/automation/jobs', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        title: plan.project,
+        brief: plan.sourcePrompt,
+        provider: state.settings.apiProvider,
+        apiKey: state.settings.apiKey,
+        model: state.settings.modelName,
+        apiBaseUrl: state.settings.apiBaseUrl
+      })
+    });
+    const job = await response.json();
+    if (!response.ok) throw new Error(job.error || 'Không thể gửi công việc tới Naruto.');
+    plan.automationJobId = job.id;
+    plan.status = 'automation_running';
+    state.saveOperationalPlans();
+    renderOperationsReports();
+    pollNarutoOrchestration(plan.id, job.id);
+  } catch (error) {
+    plan.status = 'automation_blocked';
+    plan.automationError = error.message;
+    plan.approval = { ...plan.approval, status: 'failed' };
+    state.saveOperationalPlans();
+    updateNarutoApiNotice();
+    renderOperationsReports();
+  }
+}
+
+async function pollNarutoOrchestration(planId, jobId) {
+  const plan = state.operationalPlans.find(item => item.id === planId);
+  if (!plan) return;
+  try {
+    const response = await fetch(`/api/automation/jobs/${jobId}`);
+    const job = await response.json();
+    if (!response.ok) throw new Error(job.error || 'Không đọc được trạng thái runner.');
+    plan.automationStatus = job.status;
+    plan.automationEvents = job.events || [];
+    plan.progressReports = job.progressReports || [];
+    if (job.outputs?.plan) plan.narutoPlan = job.outputs.plan;
+    if (job.outputs?.departments) plan.departmentOutputs = job.outputs.departments;
+    if (job.outputs?.qa) plan.qaReport = job.outputs.qa;
+    if (job.departmentAssignments?.length) syncNarutoDepartmentAssignments(plan, job.departmentAssignments);
+    if (job.qaDisposition) plan.qaDisposition = job.qaDisposition;
+    if (job.status === 'needs_founder_product_confirmation') {
+      plan.status = 'needs_founder_product_confirmation';
+      plan.approval = { ...plan.approval, status: 'final_review', decidedAt: null };
+      plan.resultUrl = job.artifactUrl || '#';
+      plan.resultLabel = 'Mở sản phẩm để kiểm tra';
+      state.missions.filter(task => task.planId === plan.id).forEach(task => { task.status = 'reviewing'; });
+      state.saveMissions();
+    } else if (job.status === 'blocked_qa') {
+      plan.status = 'blocked_qa';
+      plan.approval = { ...plan.approval, status: 'blocked' };
+      plan.automationError = job.outputs?.qa || 'Kakashi chặn bàn giao.';
+      plan.resultUrl = job.artifactUrl || plan.resultUrl || '#';
+      plan.resultLabel = 'Xem artifact bị chặn';
+    } else if (job.status === 'failed' || job.status === 'blocked_no_api_key' || job.status === 'interrupted') {
+      plan.status = job.status;
+      plan.automationError = job.error || 'Runner không hoàn tất.';
+      plan.approval = { ...plan.approval, status: job.status === 'blocked_no_api_key' ? 'blocked_no_api' : job.status };
+      if (job.status === 'blocked_no_api_key') {
+        notifyNarutoMissingApi(plan);
+      }
+    } else {
+      setTimeout(() => pollNarutoOrchestration(planId, jobId), 1500);
+    }
+    state.saveOperationalPlans();
+    updateNarutoApiNotice();
+    renderMissionsBoard(); renderDioramaCards(); renderOperationsReports();
+  } catch (error) {
+    plan.status = 'automation_failed'; plan.approval = { ...plan.approval, status: 'failed' }; plan.automationError = error.message; state.saveOperationalPlans(); updateNarutoApiNotice(); renderOperationsReports();
+  }
+}
+
+function confirmFinalProduct(planId) {
+  const plan = state.operationalPlans.find(item => item.id === planId);
+  if (!plan || plan.approval?.status !== 'final_review') return;
+  plan.approval = { ...plan.approval, status: 'approved', decidedAt: new Date().toLocaleString() };
+  plan.status = 'completed_approved_by_founder';
+  state.missions.filter(task => task.planId === planId).forEach(task => { task.status = 'completed'; });
+  state.saveOperationalPlans(); state.saveMissions(); renderMissionsBoard(); renderDioramaCards(); renderOperationsReports();
+}
+
+function openFounderApproval(planId) {
+  switchView("reports");
+  renderOperationsReports();
+  requestAnimationFrame(() => document.getElementById(`approval-${planId}`)?.scrollIntoView({ behavior: "smooth", block: "center" }));
 }
 
 function approveOperationalPlan(planId) {
@@ -534,7 +749,7 @@ function approveOperationalPlan(planId) {
 
 function rejectOperationalPlan(planId) {
   const plan = state.operationalPlans.find(item => item.id === planId);
-  if (!plan || plan.approval?.status !== "pending") return;
+  if (!plan || !["pending", "final_review"].includes(plan.approval?.status)) return;
   const reason = window.prompt("Lý do từ chối (tuỳ chọn). Naruto sẽ dùng nội dung này để lập phương án khác:", "") || "Founder yêu cầu phương án khác.";
   plan.approval = { ...plan.approval, status: "rejected", decidedAt: new Date().toLocaleString(), reason };
   plan.status = "rejected_by_founder";
@@ -544,7 +759,8 @@ function rejectOperationalPlan(planId) {
   const alternative = createNarutoWorkPlan(`${plan.sourcePrompt}\n\n# PHẢN HỒI FOUNDER — LẬP PHƯƠNG ÁN THAY THẾ\nLý do từ chối phương án trước: ${reason}`);
   alternative.project = `${plan.project} — Phương án B`;
   alternative.parentPlanId = plan.id;
-  alternative.approval = { status: "pending", version: (plan.approval.version || 1) + 1, requestedAt: new Date().toLocaleString(), replacesPlanId: plan.id };
+  alternative.status = "automation_queued";
+  alternative.approval = { status: "automation", version: (plan.approval.version || 1) + 1, requestedAt: new Date().toLocaleString(), replacesPlanId: plan.id };
   alternative.tasks = alternative.tasks.map(task => ({
     ...task,
     title: `${task.title} (PA B)`,
@@ -558,6 +774,7 @@ function rejectOperationalPlan(planId) {
   renderMissionsBoard();
   renderDioramaCards();
   renderOperationsReports();
+  startNarutoOrchestration(alternative);
 }
 
 class AIService {
@@ -565,28 +782,36 @@ class AIService {
     const agent = AGENTS[agentId];
     const settings = state.settings;
     const capability = DEPARTMENT_CAPABILITIES[agentId];
-    const operationalContext = `${agent.systemPrompt}\n\n${AI_OPERATING_GUARDRAILS}\n\nCác agent chuyên môn đang nạp: ${(capability?.operationalAgents || []).join(", ")}.\nSkill ưu tiên: ${(capability?.skills || []).join(", ")}.`;
+    const loadedSkills = (capability?.skillRefs || []).map(id => COMPANY_SKILLS[id]).filter(Boolean);
+    const skillContext = loadedSkills.map(skill => `- ${skill.name}: ${skill.guide}`).join("\n");
+    const operationalContext = `${agent.systemPrompt}\n\n${AI_OPERATING_GUARDRAILS}\n\nCác agent chuyên môn đang nạp: ${(capability?.operationalAgents || []).join(", ")}.\nSkill ưu tiên: ${(capability?.skills || []).join(", ")}.\nQuy trình skill áp dụng:\n${skillContext || "- Không có skill chuyên biệt."}`;
 
-    // 1. If user supplied a valid Gemini API Key
-    if (settings.apiKey && settings.apiKey.trim().length > 10 && settings.apiProvider === "gemini") {
-      try {
-        return await this.callGeminiAPI(settings.apiKey, settings.modelName || "gemini-2.0-flash", operationalContext, prompt, contextHistory);
-      } catch (err) {
-        console.warn("Gemini API call failed, falling back to Smart Simulation:", err);
-      }
+    if (settings.apiProvider === "copilot-cli") {
+      return this.callCopilotCLI(settings.modelName || "auto", operationalContext, prompt, contextHistory);
+    }
+    if (!settings.apiKey || settings.apiKey.trim().length <= 10) {
+      return this.smartSimulate(agentId, prompt);
     }
 
-    // 2. If user supplied an OpenAI API Key
-    if (settings.apiKey && settings.apiKey.trim().length > 10 && settings.apiProvider === "openai") {
-      try {
-        return await this.callOpenAIAPI(settings.apiKey, settings.modelName || "gpt-4o-mini", operationalContext, prompt, contextHistory);
-      } catch (err) {
-        console.warn("OpenAI API call failed, falling back to Smart Simulation:", err);
-      }
+    const model = settings.modelName?.trim();
+    switch (settings.apiProvider) {
+      case "gemini":
+        return this.callGeminiAPI(settings.apiKey, model || "gemini-3.8-flash", operationalContext, prompt, contextHistory);
+      case "openai":
+        return this.callOpenAIAPI(settings.apiKey, model || "gpt-4o-mini", operationalContext, prompt, contextHistory);
+      case "anthropic":
+        return this.callAnthropicAPI(settings.apiKey, model || "claude-sonnet-4-5", operationalContext, prompt, contextHistory);
+      case "deepseek":
+        return this.callCompatibleAPI(settings.apiKey, model || "deepseek-chat", operationalContext, prompt, contextHistory, settings.apiBaseUrl || "https://api.deepseek.com/v1");
+      case "groq":
+        return this.callCompatibleAPI(settings.apiKey, model || "llama-3.3-70b-versatile", operationalContext, prompt, contextHistory, settings.apiBaseUrl || "https://api.groq.com/openai/v1");
+      case "openrouter":
+        return this.callCompatibleAPI(settings.apiKey, model, operationalContext, prompt, contextHistory, settings.apiBaseUrl || "https://openrouter.ai/api/v1");
+      case "openai-compatible":
+        return this.callCompatibleAPI(settings.apiKey, model, operationalContext, prompt, contextHistory, settings.apiBaseUrl);
+      default:
+        return this.smartSimulate(agentId, prompt);
     }
-
-    // 3. Smart Simulation Engine (Offline mode / zero API key required)
-    return await this.smartSimulate(agentId, prompt);
   }
 
   static async callGeminiAPI(apiKey, model, systemPrompt, userMessage, history) {
@@ -633,6 +858,13 @@ class AIService {
   }
 
   static async callOpenAIAPI(apiKey, model, systemPrompt, userMessage, history) {
+    return this.callCompatibleAPI(apiKey, model, systemPrompt, userMessage, history, "https://api.openai.com/v1");
+  }
+
+  static async callCompatibleAPI(apiKey, model, systemPrompt, userMessage, history, baseUrl) {
+    if (!model) throw new Error("Hãy nhập tên model cho nhà cung cấp API đã chọn.");
+    if (!baseUrl) throw new Error("Hãy nhập API Base URL cho nhà cung cấp tương thích OpenAI.");
+    const endpoint = `${baseUrl.replace(/\/+$/, "")}/chat/completions`;
     const messages = [{ role: "system", content: systemPrompt }];
     history.slice(-4).forEach(item => {
       messages.push({
@@ -642,11 +874,12 @@ class AIService {
     });
     messages.push({ role: "user", content: userMessage });
 
-    const res = await fetch("https://api.openai.com/v1/chat/completions", {
+    const res = await fetch(endpoint, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "Authorization": `Bearer ${apiKey}`
+        "Authorization": `Bearer ${apiKey}`,
+        ...(baseUrl.includes("openrouter.ai") ? { "HTTP-Referer": window.location.origin, "X-Title": "Konoha Solopreneur OS" } : {})
       },
       body: JSON.stringify({
         model: model,
@@ -657,11 +890,40 @@ class AIService {
 
     if (!res.ok) {
       const errText = await res.text();
-      throw new Error(`OpenAI API Error ${res.status}: ${errText}`);
+      throw new Error(`API ${res.status}: ${errText}`);
     }
 
     const data = await res.json();
     return data.choices?.[0]?.message?.content || "Không nhận được phản hồi.";
+  }
+
+  static async callAnthropicAPI(apiKey, model, systemPrompt, userMessage, history) {
+    const messages = history.slice(-4).map(item => ({ role: item.sender === "user" ? "user" : "assistant", content: item.text }));
+    messages.push({ role: "user", content: userMessage });
+    const res = await fetch("https://api.anthropic.com/v1/messages", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "x-api-key": apiKey,
+        "anthropic-version": "2023-06-01",
+        "anthropic-dangerous-direct-browser-access": "true"
+      },
+      body: JSON.stringify({ model, system: systemPrompt, messages, max_tokens: 1400 })
+    });
+    if (!res.ok) throw new Error(`Anthropic API ${res.status}: ${await res.text()}`);
+    const data = await res.json();
+    return (data.content || []).filter(item => item.type === "text").map(item => item.text).join("\n") || "Không nhận được phản hồi.";
+  }
+
+  static async callCopilotCLI(model, systemPrompt, userMessage, history) {
+    const response = await fetch("/api/copilot/chat", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ model, prompt: userMessage, system: systemPrompt, history: history.slice(-4) })
+    });
+    const data = await response.json();
+    if (!response.ok) throw new Error(data.error || "Không kết nối được GitHub Copilot CLI.");
+    return data.text;
   }
 
   static async smartSimulate(agentId, prompt) {
@@ -821,16 +1083,54 @@ Hãy giữ vững kỷ luật này, công ty một người của chúng ta mớ
 
 // --- 4. UI Rendering Functions ---
 
+function getDepartmentWork(agentId) {
+  const kanbanTasks = state.missions.filter(mission => mission.assignee === agentId).map(mission => ({
+    title: mission.title,
+    status: mission.status,
+    deliverable: mission.desc || '',
+    evidence: '',
+    source: 'Kanban'
+  }));
+  const campaignTasks = (window.konohaTikTokCampaign?.departmentAssignments || [])
+    .filter(assignment => assignment.departmentId === agentId)
+    .map(assignment => ({
+      title: `TikTok 10 ngày: ${assignment.task}`,
+      status: assignment.status,
+      deliverable: assignment.deliverable,
+      evidence: assignment.evidence,
+      source: 'Campaign @cinetech.ai'
+    }));
+  return [...campaignTasks, ...kanbanTasks];
+}
+
+function departmentWorkStatus(status) {
+  return ({
+    in_progress: ['Đang làm', 'text-sky-200 bg-sky-500/15'],
+    completed: ['Đã nộp đầu ra', 'text-emerald-200 bg-emerald-500/15'],
+    reviewing: ['Kakashi đang rà', 'text-amber-200 bg-amber-500/15'],
+    blocked: ['Đang bị chặn', 'text-rose-200 bg-rose-500/15'],
+    queued: ['Đang chờ', 'text-slate-300 bg-slate-700/50'],
+    backlog: ['Đang chờ', 'text-slate-300 bg-slate-700/50']
+  })[status] || [String(status || 'Chưa rõ'), 'text-slate-300 bg-slate-700/50'];
+}
+
 // Render Hotspots and Mini Status on Diorama
 function renderDioramaCards() {
   const container = document.getElementById("diorama-cards-grid");
   if (!container) return;
 
   container.innerHTML = Object.values(AGENTS).map(agent => {
-    const missionCount = state.missions.filter(m => m.assignee === agent.id).length;
+    const workItems = getDepartmentWork(agent.id);
+    const missionCount = workItems.length;
+    const workHtml = workItems.length
+      ? `<div class="mt-3 pt-2 border-t border-slate-700/50 space-y-2 max-h-40 overflow-y-auto">${workItems.map(item => {
+        const [statusLabel, statusClass] = departmentWorkStatus(item.status);
+        return `<div class="rounded-md bg-slate-950/50 p-2 text-left"><div class="flex items-start justify-between gap-2"><p class="text-[11px] leading-snug text-slate-200">${escapeHtml(item.title)}</p><span class="shrink-0 rounded px-1.5 py-0.5 text-[9px] ${statusClass}">${statusLabel}</span></div><details class="mt-1 text-[10px] text-slate-400"><summary class="cursor-pointer">Đầu ra / ghi chú</summary><p class="mt-1 whitespace-pre-wrap">${escapeHtml(item.deliverable || 'Chưa ghi đầu ra.')}</p>${item.evidence ? `<p class="mt-1 text-slate-500">${escapeHtml(item.evidence)}</p>` : ''}</details></div>`;
+      }).join('')}</div>`
+      : `<div class="mt-3 pt-2 border-t border-slate-700/50 text-[10px] text-slate-500">Chưa có đầu việc được giao.</div>`;
     return `
       <div class="glass-card glass-card-interactive p-4 cursor-pointer border-t-2 border-${agent.accentClass} flex flex-col justify-between"
-           onclick="openAgentChat('${agent.id}')">
+           onclick="if (event.target.closest('details')) return; openAgentChat('${agent.id}')">
         <div>
           <div class="flex items-center justify-between mb-2">
             <span class="text-2xl">${agent.avatarIcon}</span>
@@ -839,6 +1139,7 @@ function renderDioramaCards() {
           <h4 class="font-bold text-sm text-slate-100">${agent.name}</h4>
           <p class="text-xs text-slate-400 mt-1 line-clamp-1">${agent.role.split("(")[0]}</p>
         </div>
+        ${workHtml}
         <div class="mt-3 pt-2 border-t border-slate-700/50 flex items-center justify-between text-xs text-amber-400">
           <span>Phòng: ${agent.roomName.split(" ")[1]}</span>
           <span class="text-slate-400 hover:text-white">Chat ➔</span>
@@ -855,16 +1156,19 @@ function renderCapabilitiesView() {
 
   const allCapabilities = Object.values(DEPARTMENT_CAPABILITIES);
   const specialistCount = allCapabilities.reduce((total, item) => total + item.operationalAgents.length, 0);
-  const skillCount = allCapabilities.reduce((total, item) => total + item.skills.length, 0);
+  const skillCount = new Set(allCapabilities.flatMap(item => item.skillRefs || [])).size;
   summary.innerHTML = [
-    ["🤖", specialistCount, "AI agent chuyên môn đã nạp"],
-    ["🧩", skillCount, "skill gắn theo phòng ban"],
+    ["🤖", specialistCount, "vai trò chuyên môn được cấu hình"],
+    ["🧩", skillCount, "Codex Skill tái sử dụng đã nạp"],
     ["🛡️", "100%", "đầu ra quan trọng cần Founder duyệt"]
   ].map(([icon, value, label]) => `
     <div class="glass-card p-4 border border-slate-800 flex items-center gap-3">
       <span class="text-2xl">${icon}</span>
       <div><div class="text-xl font-extrabold text-slate-100">${value}</div><div class="text-xs text-slate-400">${label}</div></div>
     </div>`).join("");
+
+  document.getElementById("capability-agent-note")?.remove();
+  summary.insertAdjacentHTML("afterend", `<p id="capability-agent-note" class="text-[11px] text-slate-400 -mt-2 mb-3">Đây là vai trò và quy trình được nạp vào prompt của từng phòng ban; chúng không phải các worker AI chạy nền đồng thời. Agent Harness dùng các file SKILL.md trong .agents/skills khi chạy Codex job.</p>`);
 
   departments.innerHTML = Object.values(AGENTS).map(agent => {
     const capability = DEPARTMENT_CAPABILITIES[agent.id];
@@ -880,6 +1184,7 @@ function renderCapabilitiesView() {
         <div class="mt-4 space-y-3 text-xs">
           <div><div class="uppercase tracking-wider font-bold text-slate-500 mb-1">Agent chuyên môn</div><div class="flex flex-wrap gap-1.5">${capability.operationalAgents.map(name => `<span class="px-2 py-1 rounded bg-violet-500/10 border border-violet-500/25 text-violet-200">${escapeHtml(name)}</span>`).join("")}</div></div>
           <div><div class="uppercase tracking-wider font-bold text-slate-500 mb-1">Skill đang áp dụng</div><ul class="text-slate-300 space-y-1">${capability.skills.map(skill => `<li>• ${escapeHtml(skill)}</li>`).join("")}</ul></div>
+          <div><div class="uppercase tracking-wider font-bold text-slate-500 mb-1">Skill đã nạp vào luồng AI</div><ul class="text-violet-200 space-y-1">${(capability.skillRefs || []).map(id => `<li>• ${escapeHtml(COMPANY_SKILLS[id]?.name || id)}</li>`).join("")}</ul></div>
           <div class="p-2.5 rounded-lg bg-slate-950/60 border border-slate-800"><span class="font-semibold text-emerald-300">Đầu ra:</span> <span class="text-slate-300">${escapeHtml(capability.outcome)}</span></div>
           <div class="p-2.5 rounded-lg bg-amber-500/10 border border-amber-500/20 text-amber-100"><span class="font-semibold">Cổng duyệt:</span> ${escapeHtml(capability.approval)}</div>
         </div>
@@ -887,10 +1192,70 @@ function renderCapabilitiesView() {
   }).join("");
 }
 
+function updateNarutoMonitorStatus() {
+  const status = document.getElementById("naruto-monitor-status");
+  if (!status) return;
+  const monitor = state.narutoMonitor;
+  const nextCheck = monitor.lastCheckedAt ? new Date(new Date(monitor.lastCheckedAt).getTime() + 2 * 60 * 60 * 1000).toLocaleString() : "sau khi có task đầu tiên";
+  status.textContent = `${monitor.lastSummary || "Chưa có dữ liệu kiểm tra tiến độ."} Lần kiểm tra tiếp theo: ${nextCheck}.`;
+}
+
+function updateNarutoApiNotice() {
+  const notice = document.getElementById("naruto-api-missing-notice");
+  if (!notice) return;
+  const hasMissingApiJob = state.operationalPlans.some(plan => plan.status === "blocked_no_api_key");
+  notice.classList.toggle("hidden", !hasMissingApiJob);
+}
+
+function notifyNarutoMissingApi(plan) {
+  updateNarutoApiNotice();
+  if (plan.apiMissingNotifiedAt) return;
+  plan.apiMissingNotifiedAt = new Date().toISOString();
+  state.saveOperationalPlans();
+        alert(`Naruto chưa thể xử lý công việc vì thiếu API key hoặc đăng nhập cho ${state.settings.apiProvider}. Mở Cài đặt AI để bổ sung rồi thử lại.`);
+}
+
+function retryBlockedNarutoJobs() {
+  const blocked = state.operationalPlans.filter(plan => plan.status === "blocked_no_api_key");
+  if (!blocked.length) return;
+  blocked.forEach(plan => startNarutoOrchestration(plan));
+}
+
+function runNarutoProgressCheck(showNotice = false) {
+  const plans = state.operationalPlans;
+  const tasks = state.missions.filter(task => task.planId);
+  const completed = tasks.filter(task => task.status === "completed").length;
+  const active = tasks.filter(task => task.status === "in_progress").length;
+  const review = tasks.filter(task => task.status === "reviewing").length;
+  const backlog = tasks.filter(task => task.status === "backlog").length;
+  const blockedPlans = plans.filter(plan => ["failed", "blocked_no_api_key", "automation_failed", "automation_blocked", "blocked_qa", "interrupted"].includes(plan.status)).length;
+  state.narutoMonitor = {
+    lastCheckedAt: new Date().toISOString(),
+    lastSummary: plans.length
+      ? `Naruto đã kiểm tra ${plans.length} kế hoạch: ${completed}/${tasks.length} task hoàn thành, ${active} đang làm, ${review} chờ Founder/QA, ${backlog} chờ xử lý${blockedPlans ? `, ${blockedPlans} job bị chặn hoặc lỗi` : ""}.`
+      : "Naruto chưa có kế hoạch nào để kiểm tra."
+  };
+  state.saveNarutoMonitor();
+  updateNarutoMonitorStatus();
+  renderOperationsReports();
+  if (showNotice) alert(state.narutoMonitor.lastSummary);
+}
+
+function openNarutoTaskIntake() {
+  state.activeAgentId = "naruto";
+  switchView("chat");
+  requestAnimationFrame(() => {
+    toggleStandardTaskForm();
+    document.getElementById("task-brief-title")?.focus();
+  });
+}
+
 function renderOperationsReports() {
   const container = document.getElementById("operations-reports-list");
+  updateNarutoApiNotice();
   if (!container) return;
-  if (!state.operationalPlans.length) {
+  updateNarutoMonitorStatus();
+  if (!state.operationalPlans.length && !state.founderNotifications.length) {
     container.innerHTML = `<div class="glass-card p-8 text-center text-sm text-slate-400">Chưa có kế hoạch tự động. Hãy giao mục tiêu cho Naruto để tạo Kanban và báo cáo tiến độ.</div>`;
     return;
   }
@@ -903,21 +1268,25 @@ function renderOperationsReports() {
     const review = tasks.filter(task => task.status === "reviewing").length;
     const blocker = tasks.filter(task => task.status === "backlog").length;
     const percent = tasks.length ? Math.round((complete / tasks.length) * 100) : 0;
-    return `<article class="glass-card p-5 border-l-4 border-naruto">
+    return `<article id="approval-${plan.id}" class="glass-card p-5 border-l-4 border-naruto">
       <div class="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3">
         <div><div class="text-[10px] font-mono text-amber-400">${escapeHtml(plan.id)}</div><h3 class="text-base font-bold text-slate-100 mt-1">${escapeHtml(plan.project)}</h3><p class="text-xs text-slate-400 mt-1">Khởi tạo: ${escapeHtml(plan.createdAt)} · Trạng thái: <span class="text-amber-300">${escapeHtml(plan.status)}</span></p></div>
         <div class="text-right"><div class="text-2xl font-extrabold text-emerald-400">${percent}%</div><div class="text-xs text-slate-400">${complete}/${tasks.length} hoàn thành</div></div>
       </div>
       <div class="mt-4 h-2 bg-slate-800 rounded-full overflow-hidden"><div class="h-full bg-gradient-to-r from-amber-500 to-emerald-400" style="width:${percent}%"></div></div>
       <div class="grid grid-cols-2 md:grid-cols-4 gap-2 mt-4 text-xs"><div class="p-2 rounded bg-slate-900 text-slate-300">Đang làm: <b class="text-sky-300">${active}</b></div><div class="p-2 rounded bg-slate-900 text-slate-300">Chờ duyệt: <b class="text-amber-300">${review}</b></div><div class="p-2 rounded bg-slate-900 text-slate-300">Chờ xử lý: <b class="text-slate-200">${blocker}</b></div><div class="p-2 rounded bg-slate-900 text-slate-300">Hoàn tất: <b class="text-emerald-300">${complete}</b></div></div>
-      <section class="mt-4 p-4 rounded-xl border ${plan.approval?.status === "approved" ? "border-emerald-500/35 bg-emerald-500/5" : plan.approval?.status === "rejected" ? "border-rose-500/35 bg-rose-500/5" : "border-amber-500/35 bg-amber-500/5"}">
+      <section class="mt-4 p-4 rounded-xl border ${plan.approval?.status === "approved" ? "border-emerald-500/35 bg-emerald-500/5" : plan.approval?.status === "rejected" || plan.approval?.status === "blocked" ? "border-rose-500/35 bg-rose-500/5" : "border-amber-500/35 bg-amber-500/5"}">
         <div class="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3">
           <div><div class="text-[10px] font-bold uppercase tracking-widest text-slate-400">Founder approval gate · Phương án v${plan.approval?.version || 1}</div><div class="font-bold text-sm mt-1 ${approval.className}">${approval.label}</div><p class="text-xs text-slate-300 mt-1">${escapeHtml(approval.detail)}</p></div>
-          ${plan.approval?.status === "pending" || !plan.approval ? `<div class="flex gap-2 shrink-0"><button class="px-3 py-2 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold" onclick="approveOperationalPlan('${plan.id}')">✓ Chấp nhận & bắt đầu</button><button class="px-3 py-2 rounded-lg bg-rose-600/90 hover:bg-rose-500 text-white text-xs font-bold" onclick="rejectOperationalPlan('${plan.id}')">✕ Từ chối, làm lại</button></div>` : ""}
+          ${plan.approval?.status === "final_review" ? `<div class="flex gap-2 shrink-0"><button class="px-3 py-2 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold" onclick="confirmFinalProduct('${plan.id}')">✓ Xác nhận sản phẩm</button><button class="px-3 py-2 rounded-lg bg-rose-600/90 hover:bg-rose-500 text-white text-xs font-bold" onclick="rejectOperationalPlan('${plan.id}')">✕ Yêu cầu làm lại</button></div>` : plan.approval?.status === "pending" || !plan.approval ? `<div class="flex gap-2 shrink-0"><button class="px-3 py-2 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold" onclick="approveOperationalPlan('${plan.id}')">✓ Chấp nhận & bắt đầu</button><button class="px-3 py-2 rounded-lg bg-rose-600/90 hover:bg-rose-500 text-white text-xs font-bold" onclick="rejectOperationalPlan('${plan.id}')">✕ Từ chối, làm lại</button></div>` : ""}
         </div>
         <p class="text-[11px] text-slate-400 mt-3">Nội dung duyệt: mục tiêu, phạm vi MVP, đầu ra, hạn bàn giao, tiêu chí nghiệm thu và danh sách ${plan.milestones.length} task dưới đây. Không có hành động bên ngoài nào được tự động thực hiện.</p>
         <details class="mt-3 text-xs"><summary class="cursor-pointer text-sky-300 hover:text-sky-200 font-semibold">Xem nguyên văn phiếu Founder sẽ duyệt</summary><pre class="mt-2 p-3 rounded-lg bg-slate-950/70 border border-slate-800 text-slate-300 whitespace-pre-wrap font-sans leading-relaxed">${escapeHtml(plan.sourcePrompt || "Không có nội dung phiếu gốc.")}</pre></details>
+        ${plan.automationEvents?.length ? `<div class="mt-3 text-[11px] text-slate-400">🤖 ${plan.automationEvents.map(escapeHtml).join(" · ")}</div>` : ""}${plan.progressReports?.length ? `<details class="mt-3 text-xs"><summary class="cursor-pointer text-emerald-200 font-semibold">Báo cáo kiểm tra định kỳ của Naruto (${plan.progressReports.length})</summary><div class="mt-2 space-y-2">${plan.progressReports.slice().reverse().map(report => `<div class="rounded bg-slate-950/70 p-2 text-slate-300"><div class="text-[10px] text-slate-500">${escapeHtml(report.checkedAt)}</div>${escapeHtml(report.summary)}</div>`).join("")}</div></details>` : ""}${plan.automationError ? `<div class="mt-3 text-xs text-rose-300">Runner: ${escapeHtml(plan.automationError)}</div>` : ""}
       </section>
+      ${plan.narutoPlan ? `<details class="mt-3 text-xs"><summary class="cursor-pointer text-sky-200 font-semibold">Xem kế hoạch Naruto</summary><pre class="mt-2 p-3 rounded-lg bg-slate-950/70 border border-slate-800 text-slate-300 whitespace-pre-wrap font-sans">${escapeHtml(plan.narutoPlan)}</pre></details>` : ""}
+      ${plan.qaReport ? `<details class="mt-3 text-xs"><summary class="cursor-pointer text-amber-200 font-semibold">Xem báo cáo Kakashi · ${escapeHtml(plan.qaDisposition || "đang kiểm tra")}</summary><pre class="mt-2 p-3 rounded-lg bg-slate-950/70 border border-slate-800 text-slate-300 whitespace-pre-wrap font-sans">${escapeHtml(plan.qaReport)}</pre></details>` : ""}
+      ${plan.departmentAssignments?.length ? `<section class="mt-4 p-4 rounded-xl border border-sky-500/30 bg-sky-500/5"><h4 class="font-bold text-sky-200 text-sm mb-2">🍥 Naruto đã điều phối phòng ban</h4><div class="space-y-2">${plan.departmentAssignments.map(item => `<div class="rounded-lg bg-slate-950/60 p-3 text-xs"><div class="flex justify-between gap-3"><b class="text-slate-100">${escapeHtml(item.departmentName)}</b><span class="text-sky-200">${escapeHtml(item.status === "completed" ? "Đã nộp đầu ra" : item.status === "in_progress" ? "Đang xử lý" : item.status === "blocked" ? "Bị chặn" : "Đang chờ")}</span></div><p class="text-slate-300 mt-1">${escapeHtml(item.task)}</p><p class="text-slate-500 mt-1">Bàn giao: ${escapeHtml(item.deliverable)}</p>${plan.departmentOutputs?.[item.departmentId] ? `<details class="mt-2"><summary class="cursor-pointer text-emerald-200">Xem đầu ra phòng ban</summary><pre class="mt-1 p-2 rounded bg-slate-900 text-slate-300 whitespace-pre-wrap font-sans">${escapeHtml(plan.departmentOutputs[item.departmentId])}</pre></details>` : ""}</div>`).join("")}</div></section>` : ""}
       <div class="mt-4 space-y-2">${tasks.map(task => `<div class="flex gap-2 text-xs"><span class="text-amber-300 shrink-0">${escapeHtml(task.dueDate)}</span><span class="text-slate-300">${AGENTS[task.assignee].avatarIcon} ${escapeHtml(task.title)}</span><span class="ml-auto text-slate-500">${escapeHtml(task.status)}</span></div>`).join("")}</div>
       <div class="mt-4 flex flex-wrap items-center gap-2"><a href="${escapeHtml(plan.resultUrl || "#")}" class="px-3 py-2 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold">${escapeHtml(plan.resultLabel || "Mở kết quả")}</a><p class="text-xs text-amber-100 bg-amber-500/10 border border-amber-500/20 rounded-lg p-2.5">Founder cần duyệt scope và mọi hành động bên ngoài. Báo cáo chỉ phản ánh trạng thái Kanban cục bộ.</p></div>
     </article>`;
@@ -929,15 +1298,9 @@ function createCapabilityMission(agentId) {
   const capability = DEPARTMENT_CAPABILITIES[agentId];
   if (!agent || !capability) return;
   const title = `Lập kế hoạch: ${capability.skills[0]}`;
-  state.missions.unshift({
-    id: "m-" + Date.now(), title, rank: "B", assignee: agentId, status: "backlog",
-    dueDate: new Date(Date.now() + 7 * 86400000).toISOString().split("T")[0],
-    desc: `${capability.outcome} Trạng thái: needs_human_review trước mọi hành động bên ngoài.`
-  });
-  state.saveMissions();
-  renderMissionsBoard();
-  renderDioramaCards();
-  alert(`Đã tạo nhiệm vụ nháp cho ${agent.name}. Founder cần duyệt trước khi thực thi bên ngoài.`);
+  const brief = `# PHIẾU GIAO VIỆC QUA NARUTO\nTASK_TITLE: ${title}\nPRIORITY: B\n\nOBJECTIVE:\n${capability.outcome}\nPhòng ${agent.name} được gợi ý làm chuyên viên tham vấn; Naruto quyết định phân công và có thể chọn thêm phòng ban.\n\nREQUIRED_ARTIFACT:\nĐầu ra chuyên môn có thể review.\n\nACCEPTANCE_AND_TEST:\nNaruto ghi rõ owner, đầu ra và blocker; Kakashi kiểm tra; mọi hành động bên ngoài cần Founder duyệt.`;
+  const plan = createOperationalPlanFromNaruto(brief);
+  handoffPlanToNarutoChat(plan, `Nhờ Naruto giao việc phù hợp cho phòng ${agent.name}: ${capability.skills[0]}.`);
 }
 
 // Render Kanban Missions Board
@@ -989,21 +1352,14 @@ function moveMission(id, dir, event) {
   const order = ["backlog", "in_progress", "reviewing", "completed"];
   const mission = state.missions.find(m => m.id === id);
   if (!mission) return;
-  const plan = mission.planId ? state.operationalPlans.find(item => item.id === mission.planId) : null;
-  if (plan && plan.approval?.status !== "approved") {
-    alert("Task này đang bị khoá. Founder cần chấp nhận phương án trong Báo cáo tiến độ trước khi triển khai.");
-    return;
-  }
-
   const currentIndex = order.indexOf(mission.status);
   const nextIndex = currentIndex + dir;
   if (nextIndex >= 0 && nextIndex < order.length) {
     mission.status = order[nextIndex];
     state.saveMissions();
-    evaluateOperationalPlanCompletion(mission.planId);
     renderMissionsBoard();
     renderDioramaCards();
-    renderOperationsReports();
+    runNarutoProgressCheck(false);
   }
 }
 
@@ -1065,11 +1421,15 @@ function renderAgentChatView() {
   const roleEl = document.getElementById("chat-agent-role");
   const quoteEl = document.getElementById("chat-agent-quote");
   const listEl = document.getElementById("chat-agent-selector-list");
+  const routingHint = document.getElementById("chat-work-routing-hint");
 
   if (avatar) avatar.textContent = agent.avatarIcon;
   if (nameEl) nameEl.textContent = agent.name;
   if (roleEl) roleEl.textContent = agent.role;
   if (quoteEl) quoteEl.textContent = `"${agent.quote}"`;
+  if (routingHint) routingHint.textContent = agent.id === "naruto"
+    ? "Naruto tiếp nhận mọi nhiệm vụ, chọn phòng ban phù hợp và theo dõi đầu ra."
+    : "Đây là kênh tham vấn chuyên môn; yêu cầu thực hiện công việc sẽ được chuyển qua Naruto để điều phối.";
 
   // Render left sidebar agent selector
   if (listEl) {
@@ -1095,13 +1455,12 @@ function renderChatMessages() {
 
   const history = state.chatHistories[state.activeAgentId] || [];
   const agent = AGENTS[state.activeAgentId];
-
   if (history.length === 0) {
     container.innerHTML = `
       <div class="text-center py-12 px-4">
         <span class="text-5xl mb-3 block">${agent.avatarIcon}</span>
         <h4 class="text-lg font-semibold text-slate-200">${agent.name} sẵn sàng hỗ trợ!</h4>
-        <p class="text-sm text-slate-400 max-w-md mx-auto mt-1 mb-4">${agent.role}. Hãy gửi tin nhắn hoặc nhiệm vụ đầu tiên cho ${agent.name.split(" ")[0]}.</p>
+        <p class="text-sm text-slate-400 max-w-md mx-auto mt-1 mb-4">${agent.role}. ${agent.id === "naruto" ? "Gửi nhiệm vụ cho Naruto để điều phối các phòng ban." : "Có thể hỏi tư vấn chuyên môn; nếu giao việc, Naruto sẽ tiếp nhận và phân công."}</p>
         <div class="inline-flex gap-2">
           <button class="px-3 py-1.5 text-xs bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-lg border border-slate-700"
                   onclick="quickAskAgent('Hãy giới thiệu vai trò và cách bạn có thể giúp tôi hôm nay?')">
@@ -1141,7 +1500,16 @@ async function sendChatMessage() {
   const text = input.value.trim();
   input.value = "";
 
-  const agentId = state.activeAgentId;
+  const selectedAgentId = state.activeAgentId;
+  const normalized = text.normalize("NFD").replace(/\p{Diacritic}/gu, "").replace(/đ/g, "d").toLowerCase();
+  const isWorkRequest = /(?:^|\s)(?:thuc hien|lam|tao|viet|sua|xay dung|phat trien|nghien cuu|phan tich|thiet ke|toi uu|chuan bi|lap ke hoach|kiem tra|trien khai|dieu tra)\b/.test(normalized)
+    || /\btoi muon\s+(?:lam|tao|viet|sua|xay dung|phat trien|nghien cuu|phan tich|thiet ke|toi uu|chuan bi|trien khai)\b/.test(normalized);
+  if (isWorkRequest) {
+    routeWorkRequestToNaruto(text, selectedAgentId === "naruto" ? null : selectedAgentId);
+    return;
+  }
+
+  const agentId = selectedAgentId;
   if (!state.chatHistories[agentId]) state.chatHistories[agentId] = [];
 
   const timeStr = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
@@ -1149,28 +1517,12 @@ async function sendChatMessage() {
   state.saveChatHistories();
   renderChatMessages();
 
-  // Only a submitted standard task brief may create a real project plan.
-  const isStandardTaskBrief = text.startsWith("# PHIẾU GIAO VIỆC THỰC");
-  const operationalPlan = agentId === "naruto" && isStandardTaskBrief ? createOperationalPlanFromNaruto(text) : null;
-  if (operationalPlan) {
-    renderMissionsBoard();
-    renderDioramaCards();
-    renderOperationsReports();
-  }
-
   // Show thinking indicator
   showChatThinking(true);
 
   try {
     const history = state.chatHistories[agentId];
     let reply = await AIService.queryAgent(agentId, text, history);
-    if (operationalPlan) {
-      const plan = operationalPlan;
-      reply += `\n\n---\n📋 **Đã lưu kế hoạch ${plan.id}**: ${plan.tasks.length} nhiệm vụ Kanban được giao từ Phiếu giao việc thực.`;
-      renderMissionsBoard();
-      renderDioramaCards();
-      renderOperationsReports();
-    }
     state.chatHistories[agentId].push({
       sender: "agent",
       text: reply,
@@ -1180,17 +1532,9 @@ async function sendChatMessage() {
   } catch (err) {
     state.chatHistories[agentId].push({
       sender: "agent",
-      text: `⚠️ Lỗi: Không thể kết nối với Agent (${err.message}). Đang chuyển sang phản hồi offline.`,
+      text: `⚠️ Không thể kết nối với ${state.settings.apiProvider || "AI provider"}: ${err.message}`,
       time: timeStr
     });
-    if (operationalPlan) {
-      state.chatHistories[agentId].push({
-        sender: "agent",
-        text: `📋 Kế hoạch ${operationalPlan.id} vẫn đã được lưu cùng ${operationalPlan.tasks.length} nhiệm vụ Kanban. Mở Báo cáo tiến độ để theo dõi.`,
-        time: timeStr
-      });
-      state.saveChatHistories();
-    }
   } finally {
     showChatThinking(false);
     renderChatMessages();
@@ -1230,14 +1574,9 @@ function submitStandardTaskBrief(event) {
     alert("Hãy điền đủ trường bắt buộc và xác nhận phạm vi an toàn.");
     return;
   }
-  const brief = `# PHIẾU GIAO VIỆC THỰC\nTASK_TITLE: ${escapeHtml(title)}\nDUE_DATE: ${escapeHtml(dueDate)}\nPRIORITY: ${escapeHtml(priority)}\nWORKSPACE: ${escapeHtml(workspace)}\n\nOBJECTIVE:\n${escapeHtml(objective)}\n\nREQUIRED_ARTIFACT:\n${escapeHtml(artifact)}\n\nACCEPTANCE_AND_TEST:\n${escapeHtml(acceptance)}\n\nYêu cầu điều phối: tạo task thực, chỉ báo hoàn thành khi có artifact và bằng chứng test; mọi hành động bên ngoài cần Founder duyệt.`;
-  state.activeAgentId = "naruto";
-  renderAgentChatView();
-  const chatInput = document.getElementById("chat-user-input");
-  if (chatInput) {
-    chatInput.value = brief;
-    sendChatMessage();
-  }
+  const brief = `# PHIẾU GIAO VIỆC THỰC\nTASK_TITLE: ${title}\nDUE_DATE: ${dueDate}\nPRIORITY: ${priority}\nWORKSPACE: ${workspace}\n\nOBJECTIVE:\n${objective}\n\nREQUIRED_ARTIFACT:\n${artifact}\n\nACCEPTANCE_AND_TEST:\n${acceptance}\n\nYêu cầu điều phối: tạo task thực, Naruto chọn phòng ban; Kakashi kiểm tra trước khi báo Founder; mọi hành động bên ngoài cần Founder duyệt.`;
+  const plan = createOperationalPlanFromNaruto(brief);
+  handoffPlanToNarutoChat(plan, `Giao việc cho Naruto: ${title}\n\n${objective}`);
   document.getElementById("standard-task-form")?.reset();
   document.getElementById("standard-task-form")?.classList.add("hidden");
 }
@@ -1320,21 +1659,6 @@ async function startCouncilMeeting() {
     meetingSummary.push({ agentId, agentName: agent.name, response });
   }
 
-  // Auto-generate 2-3 missions based on meeting
-  const newMission1 = {
-    id: "m-" + Date.now(),
-    title: `[Hội đồng] ${topic.substring(0, 45)}...`,
-    rank: "S",
-    assignee: "naruto",
-    status: "in_progress",
-    dueDate: new Date(Date.now() + 7 * 86400000).toISOString().split("T")[0],
-    desc: `Mục tiêu được khởi tạo từ Hội đồng Làng Lá. Phụ trách: Toàn thể ban cố vấn.`
-  };
-  state.missions.unshift(newMission1);
-  state.saveMissions();
-  renderMissionsBoard();
-  renderDioramaCards();
-
   // Save to Council Log
   state.councilLog.unshift({
     id: "c-" + Date.now(),
@@ -1343,6 +1667,15 @@ async function startCouncilMeeting() {
     summary: meetingSummary
   });
   state.saveCouncilLog();
+
+  const councilInputs = meetingSummary.map(item => `### ${item.agentName}\n${item.response}`).join("\n\n");
+  const followUpBrief = `# PHIẾU GIAO VIỆC TỪ HỘI ĐỒNG — NARUTO ĐIỀU PHỐI\nTASK_TITLE: ${topic.slice(0, 100)}\nPRIORITY: A\n\nOBJECTIVE:\nNaruto tổng hợp vấn đề Founder nêu, chọn phòng ban phù hợp và giao owner/đầu ra. Đầu vào tham vấn của Hội đồng:\n\n${councilInputs}\n\nREQUIRED_ARTIFACT:\nKế hoạch và đầu ra chuyên môn phù hợp với chủ đề.\n\nACCEPTANCE_AND_TEST:\nNaruto ghi rõ các phòng ban được giao; Kakashi kiểm tra đầu ra và nêu blocker. Founder duyệt mọi hành động bên ngoài.`;
+  const operationalPlan = createOperationalPlanFromNaruto(followUpBrief);
+  startNarutoOrchestration(operationalPlan);
+  runNarutoProgressCheck(false);
+  renderMissionsBoard();
+  renderDioramaCards();
+  renderOperationsReports();
 
   if (btn) {
     btn.disabled = false;
@@ -1380,7 +1713,7 @@ function switchView(viewName) {
   state.currentView = viewName;
   
   // Hide all view panels
-  ["diorama", "missions", "warroom", "chat", "capabilities", "reports", "ecc", "settings"].forEach(v => {
+  ["diorama", "missions", "warroom", "chat", "capabilities", "naruto", "ecc", "settings"].forEach(v => {
     const el = document.getElementById(`view-${v}`);
     if (el) el.classList.toggle("hidden", v !== viewName);
 
@@ -1392,7 +1725,7 @@ function switchView(viewName) {
   if (viewName === "chat") renderAgentChatView();
   if (viewName === "diorama") renderDioramaCards();
   if (viewName === "capabilities") renderCapabilitiesView();
-  if (viewName === "reports") renderOperationsReports();
+  if (viewName === "naruto") renderOperationsReports();
 }
 
 function openNewMissionModal() {
@@ -1408,7 +1741,6 @@ function closeNewMissionModal() {
 function createNewMissionFromForm() {
   const title = document.getElementById("new-mission-title").value.trim();
   const rank = document.getElementById("new-mission-rank").value;
-  const assignee = document.getElementById("new-mission-assignee").value;
   const dueDate = document.getElementById("new-mission-date").value;
   const desc = document.getElementById("new-mission-desc").value.trim();
 
@@ -1417,20 +1749,9 @@ function createNewMissionFromForm() {
     return;
   }
 
-  const newM = {
-    id: "m-" + Date.now(),
-    title,
-    rank,
-    assignee,
-    dueDate: dueDate || new Date().toISOString().split("T")[0],
-    desc,
-    status: "backlog"
-  };
-
-  state.missions.unshift(newM);
-  state.saveMissions();
-  renderMissionsBoard();
-  renderDioramaCards();
+  const brief = `# PHIẾU GIAO VIỆC QUA NARUTO\nTASK_TITLE: ${title}\nDUE_DATE: ${dueDate || new Date(Date.now() + 7 * 86400000).toISOString().split("T")[0]}\nPRIORITY: ${rank}\n\nOBJECTIVE:\n${desc || "Naruto làm rõ mục tiêu, phạm vi và các câu hỏi cần Founder xác nhận."}\n\nREQUIRED_ARTIFACT:\nNaruto chọn artifact phù hợp với yêu cầu.\n\nACCEPTANCE_AND_TEST:\nNaruto chọn phòng ban phù hợp, giao owner và đầu ra; Kakashi kiểm tra tiêu chí nghiệm thu. Mọi hành động bên ngoài cần Founder duyệt.`;
+  const plan = createOperationalPlanFromNaruto(brief);
+  handoffPlanToNarutoChat(plan, `Giao việc cho Naruto: ${title}`);
   closeNewMissionModal();
 
   // Clear inputs
@@ -1438,22 +1759,88 @@ function createNewMissionFromForm() {
   document.getElementById("new-mission-desc").value = "";
 }
 
-function saveSettingsFromUI() {
+function showProviderValidationStatus(kind, message) {
+  const status = document.getElementById("setting-api-status");
+  if (!status) return;
+  const colors = {
+    success: ["border-emerald-500/50", "bg-emerald-950/50", "text-emerald-200"],
+    warning: ["border-amber-500/50", "bg-amber-950/50", "text-amber-200"],
+    error: ["border-rose-500/50", "bg-rose-950/50", "text-rose-200"],
+    checking: ["border-sky-500/50", "bg-sky-950/50", "text-sky-200"]
+  };
+  status.classList.remove("hidden", "border-emerald-500/50", "bg-emerald-950/50", "text-emerald-200", "border-amber-500/50", "bg-amber-950/50", "text-amber-200", "border-rose-500/50", "bg-rose-950/50", "text-rose-200", "border-sky-500/50", "bg-sky-950/50", "text-sky-200");
+  status.classList.add("rounded-xl", "border", "px-3", "py-2", "text-xs", ...colors[kind]);
+  status.textContent = message;
+}
+
+async function saveSettingsFromUI() {
   const apiKey = document.getElementById("setting-api-key").value.trim();
   const apiProvider = document.getElementById("setting-provider").value;
   const modelName = document.getElementById("setting-model").value.trim();
+  const apiBaseUrl = document.getElementById("setting-api-base")?.value.trim() || "";
   const founderName = document.getElementById("setting-founder").value.trim();
+  const model = modelName || ({ gemini: "gemini-3.8-flash", openai: "gpt-4o-mini", anthropic: "claude-sonnet-4-5", deepseek: "deepseek-chat", groq: "llama-3.3-70b-versatile", "copilot-cli": "auto" }[apiProvider] || "");
+  const button = document.getElementById("setting-save-button");
+  if (button) { button.disabled = true; button.textContent = "Đang kiểm tra…"; }
+  showProviderValidationStatus("checking", `Đang kiểm tra ${apiProvider === "copilot-cli" ? "đăng nhập GitHub Copilot" : "API key"}… Chưa lưu cấu hình.`);
+  try {
+    const response = await fetch("/api/providers/validate", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ provider: apiProvider, apiKey, model, apiBaseUrl })
+    });
+    const result = await response.json();
+    if (!result.ok) {
+      showProviderValidationStatus("error", `Founder: ${result.detail || "Không xác thực được API key/đăng nhập."} Cấu hình chưa được lưu.`);
+      return;
+    }
 
-  state.saveSettings({
-    apiKey,
-    apiProvider,
-    modelName: modelName || (apiProvider === "gemini" ? "gemini-2.0-flash" : "gpt-4o-mini"),
-    founderName: founderName || "Hokage Founder"
-  });
+    state.saveSettings({ apiKey, apiProvider, apiBaseUrl, modelName: model, founderName: founderName || "Hokage Founder" });
+    document.getElementById("header-founder-name").textContent = state.settings.founderName;
+    const isModelWarning = result.status === "key_valid_model_unlisted";
+    showProviderValidationStatus(isModelWarning ? "warning" : "success", `Founder: ${result.detail} Cấu hình đã được lưu.`);
+    alert(`${isModelWarning ? "⚠️" : "✅"} ${result.detail}\n\nCấu hình đã được lưu.`);
+    switchView("diorama");
+  } catch (error) {
+    const detail = "Không kết nối được máy chủ kiểm tra API. Hãy đảm bảo app đang chạy tại localhost rồi thử lại.";
+    showProviderValidationStatus("error", `Founder: ${detail} Cấu hình chưa được lưu.`);
+  } finally {
+    if (button) { button.disabled = false; button.textContent = "Lưu Cấu Hình"; }
+  }
+}
 
-  alert("Đã lưu cấu hình cài đặt thành công!");
-  document.getElementById("header-founder-name").textContent = state.settings.founderName;
-  switchView("diorama");
+function updateProviderSettingsUI(resetModel = false) {
+  const provider = document.getElementById("setting-provider")?.value || "gemini";
+  const keyGroup = document.getElementById("setting-api-key-group");
+  const keyLabel = document.getElementById("setting-api-key-label");
+  const keyHelp = document.getElementById("setting-api-key-help");
+  const baseGroup = document.getElementById("setting-api-base-group");
+  const modelInput = document.getElementById("setting-model");
+  const modelHelp = document.getElementById("setting-model-help");
+  const keyInput = document.getElementById("setting-api-key");
+  const copilot = provider === "copilot-cli";
+  keyGroup?.classList.toggle("hidden", copilot);
+  baseGroup?.classList.toggle("hidden", !["openrouter", "openai-compatible"].includes(provider));
+
+  const settings = {
+    gemini: ["Gemini API Key", "gemini-3.8-flash", "Key lưu trong localStorage của trình duyệt này.", "gemini-3.8-flash"],
+    openai: ["OpenAI API Key", "gpt-4o-mini hoặc gpt-5.3-codex", "Codex dùng OpenAI API key và model Codex được cấp quyền; đăng nhập ChatGPT/Codex không tự thay thế API key.", "gpt-4o-mini"],
+    anthropic: ["Anthropic API Key", "claude-sonnet-4-5", "Claude API cần API key Anthropic.", "claude-sonnet-4-5"],
+    deepseek: ["DeepSeek API Key", "deepseek-chat", "DeepSeek dùng API tương thích OpenAI.", "deepseek-chat"],
+    groq: ["Groq API Key", "llama-3.3-70b-versatile", "Model khả dụng tùy tài khoản Groq.", "llama-3.3-70b-versatile"],
+    openrouter: ["OpenRouter API Key", "vd: openai/gpt-4o-mini", "Chọn model theo danh mục OpenRouter.", ""],
+    "copilot-cli": ["", "auto hoặc tên model Copilot hỗ trợ", "Cài bằng `npm install -g @github/copilot`, sau đó chạy `copilot login` trong PowerShell. Không cần API key riêng.", "auto"],
+    "openai-compatible": ["Provider API Key", "vd: mistral-large-latest, qwen...", "Dùng với Mistral, Qwen, Ollama, vLLM hoặc endpoint khác tương thích OpenAI.", ""]
+  }[provider] || ["API Key", "Tên model theo provider", "", ""];
+  if (keyLabel) keyLabel.textContent = settings[0];
+  if (keyHelp) keyHelp.textContent = settings[2];
+  if (keyInput) keyInput.placeholder = copilot ? "Không cần API key; đăng nhập bằng Copilot CLI" : `Nhập ${settings[0]}`;
+  if (resetModel && keyInput) keyInput.value = "";
+  if (modelInput) modelInput.placeholder = settings[1];
+  if (resetModel && modelInput) modelInput.value = settings[3];
+  if (modelHelp) modelHelp.textContent = provider === "copilot-cli"
+    ? "Copilot CLI cần được cài đặt và đăng nhập GitHub. App giới hạn phiên chat này ở chế độ không có công cụ thao tác file/lệnh."
+    : "Model phải được bật trong tài khoản/API của bạn; API có thể phát sinh phí theo mức sử dụng.";
 }
 
 // Utility formatting
@@ -1488,7 +1875,10 @@ window.addEventListener("DOMContentLoaded", () => {
   renderDioramaCards();
   renderMissionsBoard();
   renderCapabilitiesView();
-  renderOperationsReports();
+  runNarutoProgressCheck(false);
+  const blockedWithoutNotice = state.operationalPlans.find(plan => plan.status === "blocked_no_api_key" && !plan.apiMissingNotifiedAt);
+  if (blockedWithoutNotice) notifyNarutoMissingApi(blockedWithoutNotice);
+  setInterval(() => runNarutoProgressCheck(false), 2 * 60 * 60 * 1000);
   
   // Load settings into inputs
   if (document.getElementById("setting-api-key")) {
@@ -1497,12 +1887,18 @@ window.addEventListener("DOMContentLoaded", () => {
   if (document.getElementById("setting-provider")) {
     document.getElementById("setting-provider").value = state.settings.apiProvider || "gemini";
   }
+  if (document.getElementById("setting-api-base")) {
+    document.getElementById("setting-api-base").value = state.settings.apiBaseUrl || "";
+  }
   if (document.getElementById("setting-model")) {
-    document.getElementById("setting-model").value = state.settings.modelName || "gemini-2.0-flash";
+    document.getElementById("setting-model").value = state.settings.modelName || "gemini-3.8-flash";
   }
   if (document.getElementById("setting-founder")) {
     document.getElementById("setting-founder").value = state.settings.founderName || "Hokage Founder";
   }
+  updateProviderSettingsUI();
+  state.operationalPlans.filter(plan => plan.automationJobId && ["automation_queued", "automation_running"].includes(plan.status))
+    .forEach(plan => pollNarutoOrchestration(plan.id, plan.automationJobId));
   if (document.getElementById("header-founder-name")) {
     document.getElementById("header-founder-name").textContent = state.settings.founderName || "Hokage Founder";
   }
@@ -1605,19 +2001,17 @@ function inspectRoom(agentId) {
   document.getElementById("inspect-chakra").textContent = (85 + Math.floor(Math.random() * 14)) + "%";
 
   // Missions list
-  const missions = state.missions.filter(m => m.assignee === agentId);
+  const missions = getDepartmentWork(agentId);
   document.getElementById("inspect-mission-count").textContent = `${missions.length} tasks`;
   
   const listEl = document.getElementById("inspect-missions-list");
   if (missions.length === 0) {
     listEl.innerHTML = `<div class="text-xs text-slate-500 italic">Chưa có nhiệm vụ tồn đọng. Đang tự động tối ưu quy trình.</div>`;
   } else {
-    listEl.innerHTML = missions.map(m => `
-      <div class="p-2 rounded bg-slate-900 border border-slate-800 text-xs flex items-center justify-between">
-        <span class="truncate max-w-[260px] text-slate-200">${escapeHtml(m.title)}</span>
-        <span class="rank-badge rank-${m.rank}">Cấp ${m.rank}</span>
-      </div>
-    `).join("");
+    listEl.innerHTML = missions.map(m => {
+      const [statusLabel, statusClass] = departmentWorkStatus(m.status);
+      return `<div class="p-2 rounded bg-slate-900 border border-slate-800 text-xs"><div class="flex items-start justify-between gap-2"><span class="text-slate-200">${escapeHtml(m.title)}</span><span class="rounded px-1.5 py-0.5 text-[9px] ${statusClass}">${statusLabel}</span></div><p class="mt-1 text-[10px] text-slate-400">${escapeHtml(m.deliverable || 'Chưa ghi đầu ra.')}</p>${m.evidence ? `<p class="mt-1 text-[10px] text-slate-500">${escapeHtml(m.evidence)}</p>` : ''}</div>`;
+    }).join("");
   }
 
   modal.classList.remove("hidden");
@@ -1686,6 +2080,29 @@ let currentEccData = {
   activeSubtab: "arch"
 };
 
+function notifyEccStatus(title, message) {
+  let banner = document.getElementById('ecc-receipt');
+  if (!banner) {
+    banner = document.createElement('div');
+    banner.id = 'ecc-receipt';
+    banner.className = 'glass-card p-4 border border-amber-500/40 text-sm text-amber-200 whitespace-pre-wrap';
+    banner.setAttribute('role', 'status');
+    banner.setAttribute('aria-live', 'polite');
+    document.getElementById('ecc-goal-input')?.parentElement.appendChild(banner);
+  }
+  banner.textContent = `${title}\n${message}`;
+  state.founderNotifications.unshift({
+    id: `ecc-notice-${Date.now()}`, title, message,
+    createdAt: new Date().toLocaleString(), resultUrl: '#view-ecc', resultLabel: 'Mở Xưởng ECC'
+  });
+  state.saveFounderNotifications();
+  renderOperationsReports();
+}
+
+window.addEventListener('hashchange', () => {
+  if (window.location.hash === '#view-ecc') switchView('ecc');
+});
+
 function loadEccPreset(key) {
   const input = document.getElementById("ecc-goal-input");
   if (input && ECC_PRESETS[key]) {
@@ -1710,6 +2127,7 @@ function switchEccSubtab(subtab) {
 }
 
 async function runEccPipeline() {
+  if (document.getElementById('btn-run-ecc-pipeline')?.disabled) return;
   const input = document.getElementById("ecc-goal-input");
   const stackSelect = document.getElementById("ecc-stack-select");
   if (!input || !input.value.trim()) {
@@ -1721,6 +2139,9 @@ async function runEccPipeline() {
   const stack = stackSelect ? stackSelect.value : "node_full";
   currentEccData.goal = goal;
   currentEccData.stack = stack;
+  currentEccData.codeText = '';
+  currentEccData.isApproved = false;
+  notifyEccStatus('Đã nhận yêu cầu tại Xưởng ECC', `${goal}\nChế độ bản nháp theo mẫu. Chưa gửi yêu cầu tới Gemini runner, chưa tạo sản phẩm thực tế.`);
 
   const btn = document.getElementById("btn-run-ecc-pipeline");
   if (btn) {
@@ -1728,6 +2149,7 @@ async function runEccPipeline() {
     btn.innerHTML = `<span class="inline-block animate-spin mr-1">🌀</span> Đang chạy quy trình ECC...`;
   }
 
+  try {
   // Show stepper & output workspace
   const stepperContainer = document.getElementById("ecc-stepper-container");
   const outputWorkspace = document.getElementById("ecc-output-workspace");
@@ -1781,7 +2203,7 @@ async function runEccPipeline() {
   currentEccData.codeText = codeResult.code;
   currentEccData.testText = codeResult.tests;
   renderEccCodePane(codeResult);
-  setEccStepUI(2, "done", "Hoàn tất (Code sạch + 100% Tests TDD)");
+  setEccStepUI(2, "done", "Đã tạo code/test mẫu — chưa chạy kiểm thử");
 
   // ================= STAGE 3: KAKASHI (ECC HOOKS & SECURITY REVIEW) =================
   setEccStepUI(3, "active", "Sharingan đang quét bảo mật AgentShield & Hooks...");
@@ -1800,15 +2222,22 @@ async function runEccPipeline() {
 
   await new Promise(r => setTimeout(r, 1200));
 
-  const qaResult = generateEccSecurityAudit(goal, stack, codeResult);
+  const qaResult = '### Bản nháp cần kiểm tra\nChưa chạy kiểm thử hay kiểm định bảo mật. Chưa đủ bằng chứng xác nhận sản phẩm hoặc triển khai.';
   currentEccData.qaMd = qaResult;
   currentEccData.isApproved = false;
   renderEccQaPane(qaResult);
-  setEccStepUI(3, "done", "ĐÃ PHÊ DUYỆT DEPLOY (100% PASSED)");
+  setEccStepUI(3, "done", "Bản nháp — chưa kiểm định thực tế");
+  notifyEccStatus('ECC đã tạo bản nháp', `${goal}\nBạn có thể xem Code & Tests hoặc tải bản nháp. Chưa có job Gemini; để chạy runner local, gửi Phiếu giao việc thực cho Naruto.`);
+
+  } catch (error) {
+    currentEccData.codeText = '';
+    notifyEccStatus('ECC xử lý thất bại', `${goal}\nLý do: ${error.message}. Chưa hoàn thành nhiệm vụ; bạn có thể thử lại.`);
+  } finally {
 
   if (btn) {
     btn.disabled = false;
     btn.innerHTML = `<span>🚀</span> Kích hoạt ECC Pipeline`;
+  }
   }
 }
 
@@ -2096,7 +2525,7 @@ function renderEccQaPane(qaMd) {
         </div>
         <div class="text-right">
           <span class="px-3 py-1 bg-emerald-500/20 border border-emerald-500/40 text-emerald-400 font-extrabold text-xs rounded-xl shadow-lg shadow-emerald-500/10">
-            ✓ SHARINGAN APPROVED
+            BẢN NHÁP — CHƯA KIỂM ĐỊNH
           </span>
         </div>
       </div>
@@ -2160,23 +2589,10 @@ function pushEccToKanban() {
     alert("Vui lòng chạy quy trình ECC trước khi đẩy vào Kanban!");
     return;
   }
-
-  const newM = {
-    id: "m-" + Date.now(),
-    title: `[ECC Ready] ${currentEccData.goal.substring(0, 45)}...`,
-    rank: "S",
-    assignee: "sasuke",
-    status: "reviewing",
-    dueDate: new Date().toISOString().split("T")[0],
-    desc: `Mã nguồn và bộ test TDD đã được Shikamaru & Sasuke hoàn thiện, Kakashi đã ký duyệt bảo mật. Sẵn sàng deploy lên Production!`
-  };
-
-  state.missions.unshift(newM);
-  state.saveMissions();
-  renderMissionsBoard();
-  renderDioramaCards();
-
-  alert("Đã tạo Nhiệm Vụ Cấp S trong Bảng Kanban! Trạng thái: Sẵn sàng Deploy.");
-  switchView("missions");
+  const title = `[ECC] ${currentEccData.goal.substring(0, 70)}`;
+  const brief = `# PHIẾU GIAO VIỆC ECC QUA NARUTO\nTASK_TITLE: ${title}\nPRIORITY: A\n\nOBJECTIVE:\nNaruto điều phối các phòng ban review bản nháp ECC hiện có, xác định phần cần hoàn thiện và giao owner cho bước tiếp theo.\n\nCURRENT_DRAFT_ARCHITECTURE:\n${currentEccData.archMd}\n\nCURRENT_DRAFT_CODE:\n${currentEccData.codeText}\n\nCURRENT_DRAFT_TESTS_NOT_RUN:\n${currentEccData.testText}\n\nCURRENT_DRAFT_QA:\n${currentEccData.qaMd}\n\nREQUIRED_ARTIFACT:\nBáo cáo review và danh sách nhiệm vụ phân công.\n\nACCEPTANCE_AND_TEST:\nPhân biệt bản nháp với kiểm thử thật; Kakashi nêu bằng chứng, blocker và kiểm tra cần chạy. Không tự áp dụng patch, chạy hệ thống production hoặc phát hành.`;
+  const plan = createOperationalPlanFromNaruto(brief);
+  handoffPlanToNarutoChat(plan, `Gửi bản nháp ECC cho Naruto điều phối: ${title}`);
+  notifyEccStatus('Đã gửi Naruto điều phối', `Phòng ban sẽ được Naruto chọn dựa trên phạm vi ECC. Bản nháp chưa được xem là đã kiểm thử hoặc phát hành.`);
 }
 

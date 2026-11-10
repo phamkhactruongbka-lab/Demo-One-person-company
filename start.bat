@@ -1,8 +1,11 @@
 @echo off
+setlocal
+cd /d "%~dp0"
+set "PORT=3001"
 echo ======================================================
-echo   DANG KHOI DONG KONOHA SOLOPRENEUR OS...
+echo   KONOHA OPERATIONS CENTER - Naruto campaign monitor
+echo   Local server: http://localhost:%PORT%
+echo   Press Ctrl+C to stop the local automation runner.
 echo ======================================================
-start "" "%~dp0index.html"
-echo Da mo ung dung tren trinh duyet mac dinh cua ban!
-pause
-
+start "" "http://localhost:%PORT%"
+node server.js

@@ -68,11 +68,11 @@
         <button id="tab-chat" class="nav-tab" onclick="switchView('chat')">
           <span>💬</span> <span>Phòng 9 Agents</span>
         </button>
+        <button id="tab-naruto" class="nav-tab" onclick="switchView('naruto')">
+          <span>🍥</span> <span>Naruto Điều phối</span>
+        </button>
         <button id="tab-capabilities" class="nav-tab" onclick="switchView('capabilities')">
           <span>🧠</span> <span>Năng lực AI</span>
-        </button>
-        <button id="tab-reports" class="nav-tab" onclick="switchView('reports')">
-          <span>📊</span> <span>Báo cáo tiến độ</span>
         </button>
         <button id="tab-ecc" class="nav-tab" onclick="switchView('ecc')">
           <span>⚡</span> <span>Xưởng ECC Tech</span>
@@ -448,7 +448,7 @@
           </div>
 
           <div class="px-4 py-2 border-b border-slate-800 bg-slate-950/40 flex items-center justify-between gap-3">
-            <span class="text-xs text-slate-400">Giao việc thực cần có artifact và tiêu chí nghiệm thu.</span>
+            <span id="chat-work-routing-hint" class="text-xs text-slate-400">Naruto tiếp nhận mọi nhiệm vụ và chọn phòng ban phù hợp.</span>
             <button class="shrink-0 px-3 py-1.5 rounded-lg bg-amber-600 hover:bg-amber-500 text-white text-xs font-bold" onclick="toggleStandardTaskForm()">+ Giao việc chuẩn</button>
           </div>
 
@@ -511,21 +511,63 @@
       <div id="capability-departments" class="grid grid-cols-1 lg:grid-cols-2 gap-4"></div>
     </section>
 
-    <!-- VIEW 5: ECC TECH FORGE (XƯỞNG CÔNG NGHỆ ECC) -->
-    <section id="view-reports" class="hidden space-y-5">
+    <section id="view-naruto" class="hidden space-y-5">
       <div class="glass-card p-5 border border-amber-500/30">
         <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-3">
           <div>
-            <div class="text-xs font-bold uppercase tracking-widest text-amber-300">Naruto Operations Center</div>
-            <h2 class="text-xl font-extrabold text-slate-100 mt-1">Báo cáo tiến độ kế hoạch tự động</h2>
-            <p class="text-xs text-slate-400 mt-2">Số liệu được tính từ Kanban trong trình duyệt này; không phải báo cáo từ hệ thống bên ngoài.</p>
+            <div class="text-xs font-bold uppercase tracking-widest text-amber-300">Naruto Command Center</div>
+            <h2 class="text-xl font-extrabold text-slate-100 mt-1">Giao việc một cửa cho Naruto</h2>
+            <p class="text-xs text-slate-400 mt-2">Naruto phân rã việc, giao các phòng ban và ghi báo cáo định kỳ mỗi 2 giờ khi server local đang chạy.</p>
           </div>
           <div class="flex gap-2 flex-wrap">
-            <a href="games/brain-spark/index.html" class="px-3 py-2 text-xs rounded-xl bg-emerald-600 hover:bg-emerald-500 border border-emerald-400 text-white font-bold">▶ Mở demo game</a>
-            <button class="px-3 py-2 text-xs rounded-xl bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-200" onclick="renderOperationsReports()">↻ Cập nhật</button>
+            <button class="px-3 py-2 text-xs rounded-xl bg-amber-600 hover:bg-amber-500 border border-amber-400 text-white font-bold" onclick="openNarutoTaskIntake()">+ Giao việc cho Naruto</button>
+            <button class="px-3 py-2 text-xs rounded-xl bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-200" onclick="runNarutoProgressCheck(false)">↻ Kiểm tra ngay</button>
           </div>
         </div>
+        <p id="naruto-monitor-status" class="mt-4 text-xs text-sky-200 bg-sky-500/10 border border-sky-500/20 rounded-lg p-3">Chưa có dữ liệu kiểm tra tiến độ.</p>
+        <div id="naruto-api-missing-notice" class="hidden mt-3 p-4 rounded-lg border border-rose-500/40 bg-rose-500/10 text-rose-100" role="alert" aria-live="assertive">
+          <div class="font-bold text-sm">Thiếu API key hoặc đăng nhập AI provider</div>
+          <p class="mt-1 text-xs">Runner đã dừng và chưa tạo sản phẩm. Hãy cấu hình nhà cung cấp trong Cài đặt AI, sau đó thử lại công việc.</p>
+          <details class="mt-2 text-xs">
+            <summary class="cursor-pointer font-semibold text-amber-200">Xem cách bổ sung API / đăng nhập</summary>
+            <p class="mt-2 text-slate-300">OpenAI/Codex, Gemini, Claude, DeepSeek, Groq, OpenRouter và API tương thích: nhập key ở Cài đặt AI. Copilot: cài <code>npm install -g @github/copilot</code>, rồi chạy <code>copilot login</code> trong PowerShell.</p>
+          </details>
+          <button class="mt-3 px-3 py-2 rounded-lg bg-slate-700 hover:bg-slate-600 text-white text-xs font-bold" onclick="switchView('settings')">Mở Cài đặt AI</button>
+          <button class="mt-3 px-3 py-2 rounded-lg bg-rose-600 hover:bg-rose-500 text-white text-xs font-bold" onclick="retryBlockedNarutoJobs()">Thử lại công việc sau khi cấu hình</button>
+        </div>
       </div>
+      <section id="tiktok-campaign-panel" class="glass-card p-5 border border-fuchsia-500/30 space-y-4">
+        <div class="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-3">
+          <div>
+            <div class="text-xs font-bold uppercase tracking-widest text-fuchsia-300">Naruto Campaign Automation</div>
+            <h3 class="text-lg font-extrabold text-slate-100 mt-1">TikTok · @cinetech.ai</h3>
+            <p class="text-xs text-slate-400 mt-1">Theo dõi kế hoạch 10 ngày, lưu số liệu Founder đọc lại và tự ghi báo cáo nội bộ mỗi 2 giờ. Không tự đăng bài hay tạo số liệu từ TikTok.</p>
+          </div>
+          <button type="button" onclick="checkTikTokCampaignNow()" class="shrink-0 px-3 py-2 text-xs rounded-lg bg-fuchsia-700 hover:bg-fuchsia-600 text-white font-bold">↻ Kiểm tra ngay</button>
+        </div>
+        <div id="tiktok-campaign-summary" class="grid grid-cols-2 lg:grid-cols-4 gap-2 text-xs">
+          <div class="p-3 rounded-lg bg-slate-900 text-slate-400">Đang tải chiến dịch…</div>
+        </div>
+        <div id="tiktok-campaign-monitor" class="text-xs text-sky-200 bg-sky-500/10 border border-sky-500/20 rounded-lg p-3">Đang kết nối Naruto campaign monitor…</div>
+        <div class="grid grid-cols-1 lg:grid-cols-[1fr_auto] gap-4">
+          <div>
+            <h4 class="text-sm font-bold text-slate-200 mb-2">Lịch nội dung và trạng thái đọc lại</h4>
+            <div id="tiktok-campaign-posts" class="space-y-2"></div>
+          </div>
+          <form id="tiktok-metric-form" class="p-4 rounded-xl bg-slate-950/70 border border-slate-800 space-y-3 lg:w-72">
+            <h4 class="text-sm font-bold text-slate-200">Ghi follower từ hồ sơ TikTok</h4>
+            <label class="block text-xs text-slate-400">Follower đã đọc lại
+              <input id="tiktok-followers-input" type="number" min="0" step="1" required class="mt-1 w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white" placeholder="Ví dụ: 12">
+            </label>
+            <label class="block text-xs text-slate-400">Ghi chú nguồn đọc (tuỳ chọn)
+              <input id="tiktok-metric-note" maxlength="500" class="mt-1 w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white" placeholder="Đọc từ hồ sơ / TikTok Studio">
+            </label>
+            <button type="submit" class="w-full px-3 py-2 rounded-lg bg-sky-700 hover:bg-sky-600 text-white text-xs font-bold">Lưu số liệu đã đọc</button>
+            <p class="text-[10px] leading-relaxed text-slate-500">Ghi chú là Founder read-back; app không kết nối TikTok Analytics để xác minh độc lập.</p>
+          </form>
+        </div>
+        <p id="tiktok-campaign-message" class="hidden text-xs rounded-lg p-3" role="status" aria-live="polite"></p>
+      </section>
       <div id="operations-reports-list" class="space-y-4"></div>
     </section>
 
@@ -691,7 +733,7 @@
             </button>
             <button class="px-3 py-1.5 bg-emerald-600/90 hover:bg-emerald-500 text-white font-bold text-xs rounded-lg shadow-md flex items-center gap-1.5"
                     onclick="pushEccToKanban()">
-              🏆 Đẩy vào Kanban (Deploy Ready)
+              📋 Lưu bản nháp vào Kanban
             </button>
           </div>
         </div>
@@ -732,29 +774,45 @@
 
           <div>
             <label class="block text-xs font-semibold text-slate-300 mb-1">Nhà Cung Cấp AI (AI Provider)</label>
-            <select id="setting-provider" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-sm text-slate-200">
-              <option value="gemini">Google Gemini (Khuyên dùng - Nhanh & Miễn phí)</option>
-              <option value="openai">OpenAI (GPT-4o, GPT-4o-mini)</option>
+            <select id="setting-provider" onchange="updateProviderSettingsUI(true)" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-sm text-slate-200">
+              <option value="gemini">Google Gemini API</option>
+              <option value="openai">OpenAI API (GPT / Codex model)</option>
+              <option value="anthropic">Anthropic API (Claude)</option>
+              <option value="deepseek">DeepSeek API</option>
+              <option value="groq">Groq API</option>
+              <option value="openrouter">OpenRouter API (nhiều model)</option>
+              <option value="copilot-cli">GitHub Copilot CLI (đăng nhập GitHub)</option>
+              <option value="openai-compatible">API tương thích OpenAI (Mistral, Qwen, Ollama...)</option>
             </select>
           </div>
 
-          <div>
-            <label class="block text-xs font-semibold text-slate-300 mb-1">API Key</label>
+          <div id="setting-api-key-group">
+            <label id="setting-api-key-label" class="block text-xs font-semibold text-slate-300 mb-1">API Key</label>
             <input type="password" id="setting-api-key" placeholder="Nhập API Key (để trống nếu muốn dùng chế độ Giả lập Offline thông minh)"
                    class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-sm text-slate-200 placeholder-slate-600">
-            <p class="text-[11px] text-slate-500 mt-1">
+            <p id="setting-api-key-help" class="text-[11px] text-slate-500 mt-1">
               💡 Bạn có thể lấy API Key Gemini hoàn toàn miễn phí tại <a href="https://aistudio.google.com" target="_blank" class="text-amber-400 underline">Google AI Studio</a>.
             </p>
           </div>
 
-          <div>
-            <label class="block text-xs font-semibold text-slate-300 mb-1">Model Name</label>
-            <input type="text" id="setting-model" placeholder="gemini-2.0-flash hoặc gpt-4o-mini"
-                   class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-sm text-slate-200">
+          <div id="setting-api-base-group" class="hidden">
+            <label class="block text-xs font-semibold text-slate-300 mb-1">API Base URL</label>
+            <input type="url" id="setting-api-base" placeholder="https://api.example.com/v1"
+                   class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-sm text-slate-200 placeholder-slate-600">
+            <p class="text-[11px] text-slate-500 mt-1">Dành cho OpenRouter và API tương thích OpenAI. Để trống để dùng URL mặc định của nhà cung cấp.</p>
           </div>
 
+          <div>
+            <label class="block text-xs font-semibold text-slate-300 mb-1">Model Name</label>
+            <input type="text" id="setting-model" placeholder="Tên model theo nhà cung cấp đã chọn"
+                   class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-sm text-slate-200">
+            <p id="setting-model-help" class="text-[11px] text-slate-500 mt-1">Model phải được bật trong tài khoản/API của bạn.</p>
+          </div>
+
+          <div id="setting-api-status" role="status" aria-live="polite" class="hidden rounded-xl border px-3 py-2 text-xs"></div>
+
           <div class="pt-4 flex justify-end">
-            <button class="px-6 py-2.5 bg-amber-600 hover:bg-amber-500 text-white font-bold text-xs rounded-xl shadow-lg"
+            <button id="setting-save-button" class="px-6 py-2.5 bg-amber-600 hover:bg-amber-500 text-white font-bold text-xs rounded-xl shadow-lg"
                     onclick="saveSettingsFromUI()">
               Lưu Cấu Hình
             </button>
@@ -795,18 +853,8 @@
           </div>
 
           <div>
-            <label class="block text-xs font-semibold text-slate-300 mb-1">Giao Cho Trưởng Phòng</label>
-            <select id="new-mission-assignee" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-sm text-slate-200">
-              <option value="naruto">🍥 Naruto (Điều hành)</option>
-              <option value="shikamaru">♟️ Shikamaru (Chiến lược)</option>
-              <option value="tsunade">💰 Tsunade (Tài chính & Quỹ)</option>
-              <option value="hinata">👁️ Hinata (Nghiên cứu Intel)</option>
-              <option value="jiraiya">✍️ Jiraiya (Marketing & Storytelling)</option>
-              <option value="sai">🎨 Sai (Design & Branding)</option>
-              <option value="sasuke">🔮 Sasuke (Tech & Automation)</option>
-              <option value="kakashi">⚡ Kakashi (Kiểm định QA)</option>
-              <option value="sakura">🌸 Sakura (Khách hàng & CRM)</option>
-            </select>
+            <label class="block text-xs font-semibold text-slate-300 mb-1">Người tiếp nhận và điều phối</label>
+            <div class="w-full bg-slate-950 border border-amber-500/30 rounded-xl px-3 py-2 text-sm text-amber-200">🍥 Naruto Uzumaki — sau đó giao các phòng ban phù hợp</div>
           </div>
         </div>
 
@@ -829,7 +877,7 @@
         </button>
         <button class="px-5 py-2 bg-gradient-to-r from-amber-600 to-orange-500 hover:brightness-110 text-white font-bold text-xs rounded-xl shadow-md"
                 onclick="createNewMissionFromForm()">
-          Phát Lệnh Triển Khai ➔
+          Gửi Naruto điều phối ➔
         </button>
       </div>
     </div>
@@ -914,6 +962,7 @@
 
   <!-- App Script -->
   <script src="app.js"></script>
+  <script src="campaign-automation.js"></script>
 </body>
 </html>
 
