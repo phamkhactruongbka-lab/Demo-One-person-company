@@ -1,0 +1,8 @@
+{
+  "repo": "D:\\your-project",
+  "mode": "review",
+  "task": "Phân tích logic so sánh void với spec. Chỉ ra trường hợp biên và vị trí cần sửa.",
+  "acceptance": "Có đường dẫn file, giải thích logic <= hay <, phân biệt đo void với kết luận OK/NG.",
+  "tests": [],
+  "timeout_seconds": 900
+}

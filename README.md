@@ -18,6 +18,8 @@ Server xử lý job theo hàng đợi tuần tự, nên có thể đóng tab tr�
 
 Sáu Codex Skill dùng chung nằm trong `.agents/skills/`: `task-brief-routing`, `evidence-first-research`, `short-video-content-pack`, `build-and-verify`, `independent-qa`, và `campaign-metrics`. `app.js` gắn skill phù hợp vào prompt từng phòng ban; `AGENTS.md` định tuyến công việc Codex. Đây là hướng dẫn tái sử dụng, không phải worker chạy nền độc lập.
 
+Agent Harness cục bộ có thể xử lý tuần tự các job `queued` khi Windows user đã đăng nhập. Cài worker bằng `agent-harness/install-worker-task.ps1`; worker ghi log ở `agent-harness/data/worker.log`. Worker chưa nối với hàng đợi phòng ban của app và chưa tự duyệt, push, merge hoặc deploy. PC tắt/ngủ thì worker dừng.
+
 Runner chỉ hoạt động khi tiến trình `node server.js` còn chạy. Sau khi Windows hoặc server khởi động lại, job đang chạy được đánh dấu `interrupted` vì API key không được lưu để tự tiếp tục; hãy gửi lại task qua Naruto. Tiến độ hai giờ là báo cáo nội bộ trong app, không gửi thông báo ra ngoài.
 ### Hệ Điều Hành Công Ty 1 Người với 9 AI Agents Làng Lá (3 Tầng Trụ Sở)
 

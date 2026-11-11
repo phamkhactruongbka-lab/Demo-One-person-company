@@ -4,7 +4,10 @@ capabilities-verified.png
 node_modules/
 .copilot-data/
 .automation-jobs/
-agent-harness/
+agent-harness/data/
+agent-harness/__pycache__/
+agent-harness/.venv/
+agent-harness/job.konoha.review.json
 **/.hyperframes/
 .env
 .env.*
